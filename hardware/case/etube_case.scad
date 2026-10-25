@@ -3,11 +3,14 @@
 //
 // 1. Measure your touchscreen module with calipers and edit [Touchscreen module].
 // 2. Set PART, press F6 (Render), then File > Export > Export as STL.
-//    PART = "bezel" | "shell" | "mount" | "gasket" | "assembly"
-// Print bezel, shell and mount in PETG or ASA (not PLA: it softens in summer sun).
+//    PART = "bezel" | "shell" | "mount" | "garmin" | "garmin_test" | "gasket" | "assembly"
+// Print bezel, shell, mount and garmin in PETG or ASA (not PLA: it softens in summer sun).
 // Print the gasket in TPU 95A.
+// "mount" straps to the bar; "garmin" replaces it with a Garmin quarter-turn tab.
+// Print "garmin_test" first and twist it into your Garmin mount to check the fit.
 
 PART = "assembly";
+MOUNT = "bar";      // which mount the assembly view shows: "bar" | "garmin"
 
 /* [Touchscreen module: measure yours] */
 scr_pcb     = [86.0, 50.0];  // module PCB outline, width x height
@@ -51,6 +54,18 @@ bar_d   = 31.8;         // handlebar diameter at the clamp spot
 shim    = 1.0;          // rubber shim thickness
 strap   = [14.0, 3.5];  // strap slot width x thickness
 mount_y = 20.0;         // mount centre on the case back (+y = top of the screen)
+
+/* [Garmin quarter-turn adapter: fit-test first] */
+// Starting values from community measurements of the Garmin quarter-turn tab,
+// not from a Garmin drawing. Print PART = "garmin_test", try it in your mount,
+// then adjust and print the full adapter.
+g_tab_d    = 27.5;   // tab tip-to-tip diameter
+g_tab_w    = 21.5;   // tab width across the flats
+g_neck_d   = 20.0;   // round neck between the plate and the tabs
+g_neck_h   = 2.6;    // gap the mount's lips slide into: raise if it won't twist in
+g_tab_t    = 2.4;    // tab thickness
+g_angle    = 0;      // turn the tabs if the unit sits sideways when locked (try 90)
+g_printed  = true;   // false = flat 32 mm pad for sticking on a bought Garmin tab adapter
 
 $fn = 64;
 
@@ -160,15 +175,57 @@ module gasket() {
     }
 }
 
+// Garmin quarter-turn tab: round neck, then two tabs that lock under the mount's lips.
+module garmin_tab() {
+    cylinder(d = g_neck_d, h = g_neck_h + 0.01);
+    translate([0, 0, g_neck_h]) linear_extrude(g_tab_t)
+        rotate(g_angle) intersection() {
+            circle(d = g_tab_d);
+            square([g_tab_d + 1, g_tab_w], center = true);
+        }
+}
+
+// Printed plate down. Screws onto the case back with the bar mount's two M3 inserts.
+// Local origin = the bar mount's centre; the tab sits 4 mm below the case centre,
+// far enough from the screw heads that they stay reachable at any g_angle.
+module garmin() {
+    pt = 6;                       // plate thickness: room for recessed M3 heads
+    ty = -(mount_y + 4);          // tab centre, relative to the mount screws
+    difference() {
+        union() {
+            linear_extrude(pt) hull() {
+                for (sy = [-1, 1]) translate([0, sy*6]) circle(d = 14);
+                translate([0, ty]) circle(d = 34);
+            }
+            translate([0, ty, pt - 0.01])
+                if (g_printed) garmin_tab();
+                else cylinder(d = 32, h = 1.0);   // flat pad for a bought adapter (VHB)
+        }
+        for (sy = [-1, 1]) translate([0, sy*6, -0.01]) {
+            cylinder(d = screw_d, h = pt + 1);
+            translate([0, 0, pt - 3.4]) cylinder(d = head_d, h = 4);
+        }
+    }
+}
+
+// 10-minute fit test: the tab on a small disc, nothing else.
+module garmin_test() {
+    cylinder(d = 32, h = 2);
+    translate([0, 0, 2 - 0.01]) garmin_tab();
+}
+
 module assembly(explode = 14) {
     color("#2b3a35") shell();
     color("#d9b45a", 0.7) translate([0, 0, shell_h + explode*0.5]) gasket();
     color("#3a4a44") translate([0, 0, shell_h + gasket_t + explode + bezel_h]) mirror([0, 0, 1]) bezel();
-    color("#55625d") translate([0, mount_y, -explode]) mirror([0, 0, 1]) mount();
+    color("#55625d") translate([0, mount_y, -explode]) mirror([0, 0, 1])
+        if (MOUNT == "garmin") garmin(); else mount();
 }
 
-if (PART == "bezel")    bezel();
-if (PART == "shell")    shell();
-if (PART == "mount")    mount();
-if (PART == "gasket")   gasket();
-if (PART == "assembly") assembly();
+if (PART == "bezel")       bezel();
+if (PART == "shell")       shell();
+if (PART == "mount")       mount();
+if (PART == "garmin")      garmin();
+if (PART == "garmin_test") garmin_test();
+if (PART == "gasket")      gasket();
+if (PART == "assembly")    assembly();

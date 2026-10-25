@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-label="Garmin adapter drawings. Top view of the tab: 27.5 mm tip to tip, 21.5 mm across the flats, 20 mm neck. Side view: 6 mm plate, 2.6 mm gap for the mount's lips, 2.4 mm tab. Case back: the adapter plate uses the two bar-mount inserts, with the tab 4 mm below the case centre.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+svg .bk-t { font-family: var(--body); font-size: 26px; font-weight: 600; fill: #15201c; }
+svg .bk-bg { fill: #ffffff; fill-opacity: .9; stroke: #c9d3cf; stroke-width: 2; }
+svg .bk-lead { stroke: #15201c; stroke-width: 3; }
+svg .bk-route { fill: none; stroke: #c2410c; stroke-width: 7; stroke-dasharray: 18 12; stroke-linecap: round; stroke-linejoin: round; }
+svg .bk-dot { fill: #c2410c; stroke: #ffffff; stroke-width: 5; }
+</style>
+
+      <text x="40" y="30" class="t-b">TAB · top view (6 px = 1 mm)</text>
+      <path d="M98.6,85.5 H201.4 A82.5,82.5 0 0 1 201.4,214.5 H98.6 A82.5,82.5 0 0 1 98.6,85.5 Z" class="box-sig"/>
+      <circle cx="150" cy="150" r="60" class="w-dash"/>
+      <text x="150" y="146" text-anchor="middle" class="t-sm">neck Ø 20</text>
+      <text x="150" y="162" text-anchor="middle" class="t-sm">(dashed)</text>
+      <line x1="67.5" y1="250" x2="232.5" y2="250" class="w"/><line x1="67.5" y1="244" x2="67.5" y2="256" class="w"/><line x1="232.5" y1="244" x2="232.5" y2="256" class="w"/>
+      <text x="150" y="272" text-anchor="middle" class="t-mono">27.5 tip to tip</text>
+      <line x1="252" y1="85.5" x2="252" y2="214.5" class="w"/><line x1="246" y1="85.5" x2="258" y2="85.5" class="w"/><line x1="246" y1="214.5" x2="258" y2="214.5" class="w"/>
+      <text x="262" y="146" class="t-mono">21.5</text>
+      <text x="262" y="162" class="t-sm">across flats</text>
+
+      <text x="340" y="30" class="t-b">SIDE VIEW</text>
+      <rect x="340" y="190" width="250" height="36" class="box"/>
+      <text x="465" y="213" text-anchor="middle" class="t-sm">plate 6 mm · M3 heads recessed</text>
+      <rect x="405" y="174.4" width="120" height="15.6" class="box-sig"/>
+      <rect x="382.5" y="160" width="165" height="14.4" class="box-sig"/>
+      <line x1="560" y1="174.4" x2="560" y2="190" class="w"/><line x1="554" y1="174.4" x2="566" y2="174.4" class="w"/><line x1="554" y1="190" x2="566" y2="190" class="w"/>
+      <text x="572" y="186" class="t-mono">2.6</text>
+      <text x="572" y="168" class="t-mono">2.4 tab</text>
+      <path d="M545,178 Q520,150 500,130" class="w-dash"/>
+      <text x="420" y="122" class="t-sm">mount's lips slide into the 2.6 gap</text>
+
+      <text x="660" y="30" class="t-b">CASE BACK</text>
+      <rect x="680" y="100" width="157" height="103" rx="7" class="box"/>
+      <rect x="733" y="102" width="51" height="81" rx="12" class="box-pwr"/>
+      <circle cx="758.5" cy="112.5" r="4" class="fill-fg"/><circle cx="758.5" cy="130.5" r="4" class="fill-fg"/>
+      <circle cx="758.5" cy="157.5" r="20.6" class="box-sig"/>
+      <line x1="680" y1="151.5" x2="837" y2="151.5" class="w-dash"/>
+      <text x="758.5" y="230" text-anchor="middle" class="t-sm">2 × M3 × 10 into the bar-mount inserts</text>
+      <text x="758.5" y="248" text-anchor="middle" class="t-sm">tab 4 mm below the case centre</text>
+      <text x="842" y="155" class="t-sm">centre</text>
+    </svg>

@@ -105,8 +105,13 @@ python3 tools/etube_decode.py /dev/cu.usbmodem1101 eco
 ## Case
 
 Install OpenSCAD 2021.01+, open `hardware/case/etube_case.scad`, enter your touchscreen's
-measurements at the top, set `PART` to `bezel`, `shell`, `mount` or `gasket`, render (F6)
-and export each part as an STL. Print in PETG or ASA, and the gasket in TPU 95A.
+measurements at the top, set `PART` to `bezel`, `shell`, `mount` or `garmin`, and `gasket`,
+render (F6) and export each part as an STL. Print in PETG or ASA, and the gasket in TPU 95A.
+
+**Garmin mount:** `garmin` replaces the strap-on bar `mount` with a Garmin quarter-turn tab, so the
+head unit clicks into a Garmin out-front or stem mount. It screws onto the same two inserts. The tab
+sizes are community measurements, so print `garmin_test` (about 10 minutes) first, check the fit
+in your mount, and adjust the `g_*` parameters. `MOUNT = "garmin"` shows it in the assembly view.
 
 ![The case in OpenSCAD 2021.01: exploded assembly with the bezel, TPU gasket, shell and handlebar mount, default size 104.8 × 68.8 × 45 mm](docs/img/case-openscad-assembly.jpg)
 
