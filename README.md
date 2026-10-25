@@ -108,10 +108,11 @@ Install OpenSCAD 2021.01+, open `hardware/case/etube_case.scad`, enter your touc
 measurements at the top, set `PART` to `bezel`, `shell`, `mount` or `gasket`, render (F6)
 and export each part as an STL. Print in PETG or ASA, and the gasket in TPU 95A.
 
-![The case in OpenSCAD 2021.01: assembly view with the bezel, TPU gasket and shell exploded, default size 104.8 × 68.8 × 45 mm](docs/img/case-openscad.jpg)
+![The case in OpenSCAD 2021.01: exploded assembly with the bezel, TPU gasket, shell and handlebar mount, default size 104.8 × 68.8 × 45 mm](docs/img/case-openscad-assembly.jpg)
 
-<sub>Assembly preview in OpenSCAD 2021.01 with the default parameters: bezel on top, TPU gasket (yellow), shell
-with the USB-C opening below. The console reports 104.8 × 68.8 mm and 45 mm thick.</sub>
+<sub>Exploded assembly in OpenSCAD 2021.01 with the default parameters: bezel on top, TPU gasket (yellow), shell
+with the cable-gland hole in its side, and the handlebar mount with its strap slots underneath. The console
+reports 104.8 × 68.8 mm and 45 mm thick.</sub>
 
 ## Status
 
