@@ -8,7 +8,7 @@ touchscreen and over Bluetooth LE.
 Built for a Merida eSpresso 400 S EQ (Shimano E6100 drive, SC-E5000 display, 504 Wh
 battery), but the approach applies to other STEPS bikes that use EW-SD50 cables.
 
-![Merida eSpresso 400 S EQ](docs/img/bike.jpg)
+![Merida eSpresso 400 S EQ: DU-E6100 motor, 504 Wh battery in the down tube, E-TUBE wire up to the Y-cable and SC-E5000 display](docs/img/bike-annotated.jpg)
 
 > Hobby and education project. Not affiliated with or endorsed by Shimano.
 > Adding third-party parts may affect your warranty. The tap only listens: it never
