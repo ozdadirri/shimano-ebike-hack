@@ -108,10 +108,16 @@ Install OpenSCAD 2021.01+, open `hardware/case/etube_case.scad`, enter your touc
 measurements at the top, set `PART` to `bezel`, `shell`, `mount` or `gasket`, render (F6)
 and export each part as an STL. Print in PETG or ASA, and the gasket in TPU 95A.
 
+![The case in OpenSCAD 2021.01: assembly view with the bezel, TPU gasket and shell exploded, default size 104.8 × 68.8 × 45 mm](docs/img/case-openscad.jpg)
+
+<sub>Assembly preview in OpenSCAD 2021.01 with the default parameters: bezel on top, TPU gasket (yellow), shell
+with the USB-C opening below. The console reports 104.8 × 68.8 mm and 45 mm thick.</sub>
+
 ## Status
 
 This is a design, not a finished product. The decoder is tested against simulated frames.
-The circuit, PCB, firmware and case have **not** been built or tested yet. The bus figures
+The case file previews cleanly in OpenSCAD 2021.01. The circuit, PCB, firmware and printed
+case have **not** been built or tested yet. The bus figures
 (~1 MHz BPSK carrier, ~500 kbit/s) come from hobbyist reports and need confirming with a scope
 (Phase 3 in the guide).
 
