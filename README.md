@@ -1,5 +1,7 @@
 # DIY E-TUBE Tap
 
+**📖 Read the illustrated build guide: [ozdadirri.github.io/shimano-ebike-hack](https://ozdadirri.github.io/shimano-ebike-hack/)**
+
 A receive-only listener for the Shimano STEPS E-TUBE bus, built around an ESP32-S3.
 It plugs into the e-bike's EW-SD50 wiring through Shimano's own passive Y-cable,
 decodes what the motor, battery and display say to each other, and shows it on a
@@ -10,19 +12,34 @@ battery), but the approach applies to other STEPS bikes that use EW-SD50 cables.
 
 ![Merida eSpresso 400 S EQ: DU-E6100 motor, 504 Wh battery in the down tube, E-TUBE wire up to the Y-cable and SC-E5000 display](docs/img/bike-annotated.jpg)
 
+<table>
+  <tr>
+    <td width="45%" align="center">
+      <img src="docs/img/dashboard.png" alt="Touchscreen dashboard concept: 23.4 km/h, NORMAL assist, 72 % battery, 48 km range" width="100%"><br>
+      <sub><b>Touchscreen dashboard</b> (layout concept, sample values)</sub>
+    </td>
+    <td width="55%" align="center">
+      <img src="hardware/drawings/circuit-3.svg" alt="60 × 40 mm two-layer PCB layout: power chain along the top, signal path bottom-left, XIAO ESP32-S3 bottom-right" width="100%"><br>
+      <sub><b>Tap board PCB</b>, 60 × 40 mm, 2 layers (to scale)</sub>
+    </td>
+  </tr>
+</table>
+
 > Hobby and education project. Not affiliated with or endorsed by Shimano.
 > Adding third-party parts may affect your warranty. The tap only listens: it never
 > drives the bus, does not update firmware, and does not change the 25 km/h assist limit.
 
 ## Start here
 
-Open **[`docs/index.html`](docs/index.html)** in a browser. It's the full illustrated build manual:
+Open the guide online at **https://ozdadirri.github.io/shimano-ebike-hack/**, or open
+[`docs/index.html`](docs/index.html) locally. It's the full illustrated build manual:
 how the bus works (with an interactive BPSK demo), system design, AUD bill of materials,
 schematics, PCB layout, wiring, the build in 9 gated phases, protocol decoding, firmware,
 the touchscreen dashboard, the button add-on for assist and lights, the 3D-printed case,
 troubleshooting and a glossary.
 
-To publish it with GitHub Pages: *Settings → Pages → Deploy from branch → `main` / `docs`*.
+The site is published by GitHub Pages from `main` / `docs`, so pushing a rebuilt
+`docs/index.html` updates it within a minute or two.
 
 ## Repository layout
 
