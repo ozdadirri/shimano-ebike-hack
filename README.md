@@ -113,6 +113,11 @@ head unit clicks into a Garmin out-front or stem mount. It screws onto the same 
 sizes are community measurements, so print `garmin_test` (about 10 minutes) first, check the fit
 in your mount, and adjust the `g_*` parameters. `MOUNT = "garmin"` shows it in the assembly view.
 
+<p align="center"><img src="docs/img/case-garmin.jpg" alt="Back of the case in OpenSCAD with the Garmin-compatible adapter: a plate screwed to the two mount inserts, with the round quarter-turn tab just below the case centre" width="70%"></p>
+
+<p align="center"><sub><b>Garmin-compatible mount</b>: the adapter plate on the case back, held by the two M3 screws,<br>
+with the quarter-turn tab just below the centre so the unit balances on the mount.</sub></p>
+
 ![The case in OpenSCAD 2021.01: exploded assembly with the bezel, TPU gasket, shell and handlebar mount, default size 104.8 × 68.8 × 45 mm](docs/img/case-openscad-assembly.jpg)
 
 <sub>Exploded assembly in OpenSCAD 2021.01 with the default parameters: bezel on top, TPU gasket (yellow), shell
