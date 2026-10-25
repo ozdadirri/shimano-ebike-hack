@@ -5,8 +5,10 @@ It plugs into the e-bike's EW-SD50 wiring through Shimano's own passive Y-cable,
 decodes what the motor, battery and display say to each other, and shows it on a
 touchscreen and over Bluetooth LE.
 
-Built for a Merida eSpresso 400 S (Shimano E6100 drive, SC-E5000 display), but the
-approach applies to other STEPS bikes that use EW-SD50 cables.
+Built for a Merida eSpresso 400 S EQ (Shimano E6100 drive, SC-E5000 display, 504 Wh
+battery), but the approach applies to other STEPS bikes that use EW-SD50 cables.
+
+![Merida eSpresso 400 S EQ](docs/img/bike.jpg)
 
 > Hobby and education project. Not affiliated with or endorsed by Shimano.
 > Adding third-party parts may affect your warranty. The tap only listens: it never

@@ -220,6 +220,14 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
 .sv .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
 .sv .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
 
+/* Bike photo with callouts: the photo has a white ground, so its labels keep fixed colours */
+.bikefig svg { background: #ffffff; border-radius: 8px; }
+.sv .bk-t { font-family: var(--body); font-size: 26px; font-weight: 600; fill: #15201c; }
+.sv .bk-bg { fill: #ffffff; fill-opacity: .9; stroke: #c9d3cf; stroke-width: 2; }
+.sv .bk-lead { stroke: #15201c; stroke-width: 3; }
+.sv .bk-route { fill: none; stroke: #c2410c; stroke-width: 7; stroke-dasharray: 18 12; stroke-linecap: round; stroke-linejoin: round; }
+.sv .bk-dot { fill: #c2410c; stroke: #ffffff; stroke-width: 5; }
+
 /* Phone web dashboard mock */
 .phone { width: 236px; max-width: 100%; border: 9px solid #232a28; border-radius: 30px; background: #0b0f0e; color: #e8f1ee; padding: 18px 14px; display: grid; gap: 10px; font-family: var(--display); }
 .phone .bar { font-family: var(--mono); font-size: 11px; color: #93a39e; display: flex; justify-content: space-between; }
@@ -259,7 +267,7 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
 <main>
 <!-- ============ 01 OVERVIEW ============ -->
 <section id="overview" class="hero">
-  <div class="kicker">MERIDA eSPRESSO 400 S · SHIMANO STEPS E6100 · ESP32-S3</div>
+  <div class="kicker">MERIDA eSPRESSO 400 S EQ · SHIMANO STEPS E6100 · ESP32-S3</div>
   <h1>DIY E-TUBE Tap</h1>
   <p class="lede">A receive-only listener that plugs into your e-bike's E-TUBE wire, decodes what the motor, battery and display say to each other, and shows it on your own touchscreen and over Bluetooth.</p>
   <div class="specline">
@@ -270,6 +278,34 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
     <div><span>Draw</span><span>~17 mA @ 8 V (no screen)</span></div>
   </div>
   <p class="disclaimer">* Figures reported by hobbyists who probed Di2/E-TUBE wiring. Confirm them on your own bike in Phase 3. Hobby project, not affiliated with or endorsed by Shimano. Adding third-party parts may affect your warranty.</p>
+
+  <figure class="bikefig">
+    <svg class="sv" viewBox="0 270 1500 920" role="img" aria-label="The Merida eSpresso 400 S EQ this project is built for, with the motor at the bottom bracket, the battery in the down tube, the E-TUBE wire running inside the frame to the head tube, and the display and new head unit on the handlebar.">
+      <image href="img/bike.jpg" x="0" y="0" width="1500" height="1500"/>
+      <path d="M770,870 L860,760 L960,560 L1030,450 L1015,345" class="bk-route"/>
+      <line x1="1020" y1="345" x2="1100" y2="318" class="bk-lead"/>
+      <rect x="1100" y="270" width="380" height="76" rx="10" class="bk-bg"/>
+      <text x="1114" y="302" class="bk-t">SC-E5000 display +</text>
+      <text x="1114" y="334" class="bk-t">your touchscreen unit</text>
+      <line x1="1040" y1="440" x2="1100" y2="430" class="bk-lead"/>
+      <rect x="1100" y="392" width="380" height="76" rx="10" class="bk-bg"/>
+      <text x="1114" y="424" class="bk-t">Y-cable + JC200s,</text>
+      <text x="1114" y="456" class="bk-t">near the display</text>
+      <line x1="925" y1="690" x2="870" y2="660" class="bk-lead"/>
+      <rect x="600" y="610" width="270" height="76" rx="10" class="bk-bg"/>
+      <text x="735" y="642" text-anchor="middle" class="bk-t">504 Wh battery</text>
+      <text x="735" y="674" text-anchor="middle" class="bk-t">in the down tube</text>
+      <line x1="770" y1="905" x2="770" y2="1020" class="bk-lead"/>
+      <rect x="600" y="1020" width="340" height="76" rx="10" class="bk-bg"/>
+      <text x="770" y="1052" text-anchor="middle" class="bk-t">DU-E6100 motor:</text>
+      <text x="770" y="1084" text-anchor="middle" class="bk-t">E-TUBE wire starts here</text>
+      <circle cx="770" cy="880" r="16" class="bk-dot"/>
+      <circle cx="925" cy="690" r="16" class="bk-dot"/>
+      <circle cx="1040" cy="440" r="16" class="bk-dot"/>
+      <circle cx="1020" cy="345" r="16" class="bk-dot"/>
+    </svg>
+    <figcaption><b>The bike: Merida eSpresso 400 S EQ.</b> The dashed orange line is roughly where the E-TUBE wire runs inside the frame, from the motor up the down tube to the display on the handlebar. Everything in this guide plugs in at the display end, so nothing inside the frame gets touched.</figcaption>
+  </figure>
 
   <div class="prose">
     <h3>Why this is a good learning project</h3>

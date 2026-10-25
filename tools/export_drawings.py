@@ -35,6 +35,8 @@ def main():
         if not inner.strip():          # skip the interactive demo, drawn by script
             continue
         n += 1
+        if "<image" in inner:          # skip photos; they live in docs/img
+            continue
         open_tag = svg[:svg.index(">") + 1]
         tag = open_tag.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"', 1)
         tag = re.sub(r'\sclass="[^"]*"', "", tag)
