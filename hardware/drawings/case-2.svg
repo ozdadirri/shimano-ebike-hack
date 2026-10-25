@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" role="img" aria-label="Print plates at 1.5 px per millimetre: on a 220 mm bed, the shell floor-down, the bezel front-down and the mount plate-down in PETG or ASA; the gasket separately in TPU.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+</style>
+
+      <rect x="20" y="30" width="330" height="270" rx="6" class="box-sunk"/>
+      <text x="20" y="20" class="t-b">Plate 1 · PETG or ASA · no supports</text>
+      <rect x="40" y="50" width="157" height="103" rx="7" class="box"/><text x="118" y="98" text-anchor="middle" class="t-b">shell</text><text x="118" y="116" text-anchor="middle" class="t-sm">floor down</text>
+      <rect x="40" y="175" width="157" height="103" rx="7" class="box"/><text x="118" y="223" text-anchor="middle" class="t-b">bezel</text><text x="118" y="241" text-anchor="middle" class="t-sm">front face down</text>
+      <rect x="225" y="50" width="66" height="39" rx="4" class="box"/><text x="258" y="74" text-anchor="middle" class="t-b">mount</text>
+      <text x="258" y="106" text-anchor="middle" class="t-sm">plate down</text>
+      <rect x="400" y="30" width="330" height="270" rx="6" class="box-sunk"/>
+      <text x="400" y="20" class="t-b">Plate 2 · TPU 95A</text>
+      <rect x="420" y="50" width="157" height="103" rx="7" class="w" style="stroke-width:5;stroke:var(--warn)"/>
+      <text x="498" y="105" text-anchor="middle" class="t-b">gasket</text>
+      <text x="498" y="175" text-anchor="middle" class="t-sm">or cut it from 1 mm silicone sheet</text>
+    </svg>

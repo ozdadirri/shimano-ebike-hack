@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 350" role="img" aria-label="Signal path schematic: BUS+ through 1 nF C1 and 10 kilohm R1 to node A, biased to 1.65 V by two 100 kilohm resistors and clamped by BAT54S, into comparator IN plus. IN minus comes from a trimmer divider. 1 megohm R4 provides hysteresis. Output goes through 100 ohm R7 to GPIO4.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+</style>
+
+      <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="fill-fg"/></marker></defs>
+      <!-- input -->
+      <text x="20" y="128" class="t-mono t-pwr">BUS+ (J1)</text>
+      <line x1="20" y1="140" x2="118" y2="140" class="w-sig"/>
+      <line x1="118" y1="124" x2="118" y2="156" class="w" style="stroke-width:2.4"/>
+      <line x1="128" y1="124" x2="128" y2="156" class="w" style="stroke-width:2.4"/>
+      <text x="123" y="110" text-anchor="middle" class="t-b">C1</text>
+      <text x="123" y="178" text-anchor="middle" class="t-sm">1 nF C0G</text>
+      <line x1="128" y1="140" x2="168" y2="140" class="w-sig"/>
+      <polyline points="168,140 172,132 180,148 188,132 196,148 204,132 212,148 220,132 224,140" class="w"/>
+      <text x="196" y="122" text-anchor="middle" class="t-b">R1</text>
+      <text x="196" y="170" text-anchor="middle" class="t-sm">10 kΩ</text>
+      <line x1="224" y1="140" x2="420" y2="140" class="w-sig"/>
+      <!-- 3V3 rail -->
+      <text x="246" y="44" text-anchor="end" class="t-mono t-pwr">3V3</text>
+      <line x1="252" y1="40" x2="330" y2="40" class="w-pwr"/>
+      <!-- clamp diodes at x=270 -->
+      <circle cx="270" cy="140" r="3.5" class="dot-sig"/>
+      <line x1="270" y1="140" x2="270" y2="114" class="w"/>
+      <polygon points="261,114 279,114 270,98" class="fill-fg"/>
+      <line x1="261" y1="98" x2="279" y2="98" class="w" style="stroke-width:2.2"/>
+      <line x1="270" y1="98" x2="270" y2="40" class="w"/>
+      <line x1="270" y1="140" x2="270" y2="180" class="w"/>
+      <line x1="261" y1="180" x2="279" y2="180" class="w" style="stroke-width:2.2"/>
+      <polygon points="261,196 279,196 270,180" class="fill-fg"/>
+      <line x1="270" y1="196" x2="270" y2="320" class="w-gnd"/>
+      <text x="248" y="218" text-anchor="end" class="t-b">D2</text>
+      <text x="248" y="234" text-anchor="end" class="t-sm">BAT54S</text>
+      <!-- bias R2/R3 at x=320 -->
+      <circle cx="320" cy="140" r="3.5" class="dot-sig"/>
+      <text x="312" y="160" text-anchor="end" class="t-mono t-sig" style="font-size:11px">A</text>
+      <line x1="320" y1="140" x2="320" y2="112" class="w"/>
+      <polyline points="320,112 312,108 328,100 312,92 328,84 312,76 320,72" class="w"/>
+      <line x1="320" y1="72" x2="320" y2="40" class="w"/>
+      <text x="334" y="96" class="t-sm">R2 100k</text>
+      <line x1="320" y1="140" x2="320" y2="196" class="w"/>
+      <polyline points="320,196 312,200 328,208 312,216 328,224 312,232 320,236" class="w"/>
+      <line x1="320" y1="236" x2="320" y2="320" class="w-gnd"/>
+      <text x="334" y="220" class="t-sm">R3 100k</text>
+      <!-- R4 feedback -->
+      <circle cx="355" cy="140" r="3.5" class="dot-sig"/>
+      <line x1="355" y1="140" x2="355" y2="80" class="w"/>
+      <line x1="355" y1="80" x2="440" y2="80" class="w"/>
+      <polyline points="440,80 444,72 452,88 460,72 468,88 476,72 484,88 492,72 496,80" class="w"/>
+      <line x1="496" y1="80" x2="580" y2="80" class="w"/>
+      <line x1="580" y1="80" x2="580" y2="170" class="w"/>
+      <text x="468" y="62" text-anchor="middle" class="t-b">R4 1 MΩ</text>
+      <text x="468" y="104" text-anchor="middle" class="t-sm">hysteresis ≈ 27 mV</text>
+      <!-- comparator -->
+      <polygon points="420,110 420,230 540,170" class="box-sig"/>
+      <text x="430" y="145" class="t-b">+</text>
+      <text x="430" y="205" class="t-b">−</text>
+      <text x="462" y="174" class="t-b" style="font-size:12px">U2</text>
+      <text x="480" y="250" text-anchor="middle" class="t-sm">TLV3501 · VCC 3V3, 100 nF at pin</text>
+      <!-- IN- divider -->
+      <line x1="410" y1="200" x2="420" y2="200" class="w"/>
+      <line x1="410" y1="200" x2="410" y2="262" class="w" marker-end="url(#ar3)"/>
+      <text x="306" y="275" text-anchor="end" class="t-mono t-pwr">3V3</text>
+      <line x1="310" y1="270" x2="338" y2="270" class="w"/>
+      <polyline points="338,270 342,262 350,278 358,262 366,278 374,262 378,270" class="w"/>
+      <line x1="378" y1="270" x2="388" y2="270" class="w"/>
+      <rect x="388" y="263" width="46" height="14" rx="2" class="box"/>
+      <line x1="434" y1="270" x2="444" y2="270" class="w"/>
+      <polyline points="444,270 448,262 456,278 464,262 472,278 480,262 484,270" class="w"/>
+      <line x1="484" y1="270" x2="520" y2="270" class="w"/>
+      <line x1="520" y1="270" x2="520" y2="320" class="w-gnd"/>
+      <text x="358" y="300" text-anchor="middle" class="t-sm">R5 47k</text>
+      <text x="411" y="300" text-anchor="middle" class="t-sm">RV1 10k</text>
+      <text x="464" y="300" text-anchor="middle" class="t-sm">R6 47k</text>
+      <!-- output -->
+      <line x1="540" y1="170" x2="620" y2="170" class="w-sig"/>
+      <circle cx="580" cy="170" r="3.5" class="dot-sig"/>
+      <polyline points="620,170 624,162 632,178 640,162 648,178 656,162 664,178 672,162 676,170" class="w"/>
+      <text x="648" y="152" text-anchor="middle" class="t-b">R7 100 Ω</text>
+      <line x1="676" y1="170" x2="760" y2="170" class="w-sig"/>
+      <rect x="760" y="140" width="140" height="60" rx="7" class="box"/>
+      <text x="830" y="166" text-anchor="middle" class="t-b">XIAO D3</text>
+      <text x="830" y="184" text-anchor="middle" class="t-sm">GPIO4 · RMT RX</text>
+      <!-- GND rail -->
+      <line x1="20" y1="320" x2="900" y2="320" class="w-gnd"/>
+      <text x="20" y="340" class="t-mono">GND (J1) — shared with XIAO GND</text>
+    </svg>

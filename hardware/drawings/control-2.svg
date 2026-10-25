@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 270" role="img" aria-label="Inside the display: the E-TUBE wire passes through coupling to a bus modem, then the main chip, then an LCD driver and the LCD. Tap point 1 is between modem and main chip, tap point 2 between main chip and LCD driver, tap point 3 on the buttons. The modem and LCD driver may be built into the main chip, in which case those tap points don't exist.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+</style>
+
+      <defs><marker id="md" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="fill-fg"/></marker></defs>
+      <rect x="140" y="26" width="745" height="214" rx="14" class="board"/>
+      <text x="156" y="46" class="t-sm">inside the SC-E5000 (opened)</text>
+      <text x="20" y="112" class="t-b">E-TUBE</text><text x="20" y="128" class="t-sm">wire</text>
+      <line x1="20" y1="140" x2="168" y2="140" class="w-cable"/>
+      <rect x="170" y="112" width="110" height="56" rx="7" class="box"/>
+      <text x="225" y="136" text-anchor="middle" class="t-b">coupling</text><text x="225" y="154" text-anchor="middle" class="t-sm">+ filter</text>
+      <line x1="280" y1="140" x2="308" y2="140" class="w" marker-end="url(#md)"/>
+      <text x="294" y="186" text-anchor="middle" class="t-sm">1 MHz wave</text>
+      <rect x="310" y="112" width="120" height="56" rx="7" class="box" style="stroke-dasharray:5 4"/>
+      <text x="370" y="136" text-anchor="middle" class="t-b">bus modem</text><text x="370" y="154" text-anchor="middle" class="t-sm">separate chip?</text>
+      <line x1="430" y1="140" x2="478" y2="140" class="w-sig" marker-end="url(#md)"/>
+      <rect x="480" y="112" width="120" height="56" rx="7" class="box"/>
+      <text x="540" y="136" text-anchor="middle" class="t-b">main chip</text><text x="540" y="154" text-anchor="middle" class="t-sm">MCU</text>
+      <line x1="600" y1="140" x2="648" y2="140" class="w-sig" marker-end="url(#md)"/>
+      <rect x="650" y="112" width="110" height="56" rx="7" class="box" style="stroke-dasharray:5 4"/>
+      <text x="705" y="136" text-anchor="middle" class="t-b">LCD driver</text><text x="705" y="154" text-anchor="middle" class="t-sm">separate chip?</text>
+      <line x1="760" y1="140" x2="788" y2="140" class="w" marker-end="url(#md)"/>
+      <rect x="790" y="112" width="80" height="56" rx="7" class="box-sunk"/><text x="830" y="145" text-anchor="middle" class="t-b">LCD</text>
+      <rect x="480" y="196" width="120" height="32" rx="7" class="box"/><text x="540" y="217" text-anchor="middle">buttons</text>
+      <line x1="540" y1="196" x2="540" y2="170" class="w-sig" marker-end="url(#md)"/>
+      <circle cx="454" cy="140" r="11" class="box-sig"/><text x="454" y="144" text-anchor="middle" class="t-b t-sig" style="font-size:12px">1</text>
+      <text x="454" y="92" text-anchor="middle" class="t-sm t-sig">digital bits</text><text x="454" y="106" text-anchor="middle" class="t-sm t-sig">UART / SPI?</text>
+      <circle cx="624" cy="140" r="11" class="box-sig"/><text x="624" y="144" text-anchor="middle" class="t-b t-sig" style="font-size:12px">2</text>
+      <text x="624" y="92" text-anchor="middle" class="t-sm t-sig">screen contents</text><text x="624" y="106" text-anchor="middle" class="t-sm t-sig">segment writes</text>
+      <circle cx="568" cy="184" r="11" class="box-sig"/><text x="568" y="188" text-anchor="middle" class="t-b t-sig" style="font-size:12px">3</text>
+      <text x="586" y="188" class="t-sm t-sig">button lines</text>
+      <text x="294" y="64" text-anchor="middle" class="t-sm">your current tap</text>
+      <text x="294" y="78" text-anchor="middle" class="t-sm">sees this</text>
+    </svg>

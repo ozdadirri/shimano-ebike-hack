@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" role="img" aria-label="System diagram: the motor cable joins the EW-JC130 Y-cable through an EW-JC200 coupler. One leg goes to the display, the other through a second coupler and a pigtail to the DIY board, which has power, AC tap, comparator and ESP32-S3 blocks driving a touchscreen and BLE.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+</style>
+
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="fill-fg"/></marker>
+        <marker id="ar-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dot-sig"/></marker>
+        <marker id="ar-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dot-pwr"/></marker>
+      </defs>
+      <!-- motor -->
+      <rect x="20" y="40" width="140" height="70" rx="8" class="box"/>
+      <text x="90" y="70" text-anchor="middle" class="t-b">DU-E6100</text>
+      <text x="90" y="90" text-anchor="middle" class="t-sm">drive unit</text>
+      <!-- original cable -->
+      <line x1="160" y1="75" x2="330" y2="75" class="w-cable"/>
+      <text x="245" y="62" text-anchor="middle" class="t-sm">original EW-SD50 (in frame)</text>
+      <!-- JC200 #1 -->
+      <rect x="330" y="62" width="56" height="26" rx="5" class="box-sunk"/>
+      <text x="358" y="80" text-anchor="middle" class="t-mono">JC200</text>
+      <!-- L2 -->
+      <line x1="386" y1="75" x2="448" y2="75" class="w-cable"/>
+      <text x="417" y="62" text-anchor="middle" class="t-sm">L2 50</text>
+      <!-- Y -->
+      <circle cx="460" cy="75" r="12" class="fill-bg"/>
+      <text x="460" y="80" text-anchor="middle" class="t-b" style="font-size:12px">Y</text>
+      <text x="460" y="30" text-anchor="middle" class="t-b">EW-JC130 Y-cable</text>
+      <text x="460" y="46" text-anchor="middle" class="t-sm">3 plugs · passive</text>
+      <!-- L3 -->
+      <line x1="472" y1="75" x2="660" y2="75" class="w-cable"/>
+      <text x="566" y="62" text-anchor="middle" class="t-sm">L3 · 250 mm</text>
+      <rect x="660" y="40" width="150" height="70" rx="8" class="box"/>
+      <text x="735" y="70" text-anchor="middle" class="t-b">SC-E5000</text>
+      <text x="735" y="90" text-anchor="middle" class="t-sm">display (unchanged)</text>
+      <!-- L1 down -->
+      <line x1="460" y1="87" x2="460" y2="170" class="w-cable"/>
+      <text x="472" y="135" class="t-sm">L1 · 350 mm</text>
+      <rect x="432" y="170" width="56" height="26" rx="5" class="box-sunk"/>
+      <text x="460" y="188" text-anchor="middle" class="t-mono">JC200</text>
+      <line x1="460" y1="196" x2="460" y2="262" class="w-cable"/>
+      <text x="472" y="235" class="t-sm">EW-SD50 pigtail (cut)</text>
+      <!-- board -->
+      <rect x="190" y="262" width="580" height="150" rx="12" class="board"/>
+      <text x="206" y="402" class="t-sm">your board (IP67 box)</text>
+      <!-- split -->
+      <line x1="275" y1="282" x2="415" y2="282" class="w"/>
+      <line x1="460" y1="262" x2="460" y2="282" class="w"/>
+      <line x1="415" y1="282" x2="460" y2="282" class="w"/>
+      <circle cx="460" cy="282" r="3.5" class="dot"/>
+      <line x1="275" y1="282" x2="275" y2="300" class="w-pwr" marker-end="url(#ar-p)"/>
+      <line x1="415" y1="282" x2="415" y2="300" class="w-sig" marker-end="url(#ar-s)"/>
+      <rect x="210" y="300" width="130" height="66" rx="7" class="box-pwr"/>
+      <text x="275" y="326" text-anchor="middle" class="t-b">Protect + power</text>
+      <text x="275" y="344" text-anchor="middle" class="t-sm">fuse · TVS · choke · buck</text>
+      <rect x="360" y="300" width="110" height="66" rx="7" class="box-sig"/>
+      <text x="415" y="326" text-anchor="middle" class="t-b">AC tap</text>
+      <text x="415" y="344" text-anchor="middle" class="t-sm">1 nF + bias</text>
+      <line x1="470" y1="333" x2="490" y2="333" class="w-sig" marker-end="url(#ar-s)"/>
+      <rect x="490" y="300" width="110" height="66" rx="7" class="box-sig"/>
+      <text x="545" y="326" text-anchor="middle" class="t-b">Comparator</text>
+      <text x="545" y="344" text-anchor="middle" class="t-sm">TLV3501</text>
+      <line x1="600" y1="333" x2="620" y2="333" class="w-sig" marker-end="url(#ar-s)"/>
+      <rect x="620" y="300" width="130" height="66" rx="7" class="box"/>
+      <text x="685" y="326" text-anchor="middle" class="t-b">XIAO ESP32-S3</text>
+      <text x="685" y="344" text-anchor="middle" class="t-sm">GPIO4 · RMT</text>
+      <path d="M275,366 V384 H685 V366" class="w-pwr" marker-end="url(#ar-p)"/>
+      <text x="480" y="378" text-anchor="middle" class="t-sm t-pwr">3.3 V (Stage B)</text>
+      <!-- outputs -->
+      <line x1="750" y1="320" x2="830" y2="300" class="w" marker-end="url(#ar)"/>
+      <text x="790" y="298" text-anchor="middle" class="t-sm">SPI + I²C</text>
+      <rect x="830" y="270" width="150" height="56" rx="8" class="box"/>
+      <text x="905" y="295" text-anchor="middle" class="t-b">Touchscreen</text>
+      <text x="905" y="312" text-anchor="middle" class="t-sm">LVGL dashboard</text>
+      <line x1="750" y1="350" x2="830" y2="372" class="w-dash" marker-end="url(#ar)"/>
+      <text x="790" y="378" text-anchor="middle" class="t-sm">BLE</text>
+      <rect x="830" y="350" width="150" height="50" rx="8" class="box"/>
+      <text x="905" y="373" text-anchor="middle" class="t-b">Phone</text>
+      <text x="905" y="389" text-anchor="middle" class="t-sm">nRF Connect / your app</text>
+    </svg>

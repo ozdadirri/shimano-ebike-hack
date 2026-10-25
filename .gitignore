@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# ESP-IDF
+firmware/**/build/
+firmware/**/sdkconfig
+firmware/**/sdkconfig.old
+firmware/**/managed_components/
+firmware/**/dependencies.lock
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Decoder capture logs
+*.log
+
+# Exported meshes (regenerate from the .scad)
+*.stl
+*.3mf

@@ -1,0 +1,11 @@
+menu "E-TUBE tap"
+
+    config TAP_SELFTEST
+        bool "Output a 1 MHz self-test signal on GPIO2 (XIAO D1)"
+        default n
+        help
+            Phase 4 bench test: feed GPIO2 through a 10k/1k divider into C1
+            and tune RV1 until GPIO4 shows a clean 500 ns / 500 ns square wave.
+            Turn this off before connecting to the bike.
+
+endmenu

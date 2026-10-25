@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" role="img" aria-label="Measuring the bus: multimeter on DC volts across the two cores, and an oscilloscope probe through a 1 nF capacitor on BUS+ with ground clip on GND, showing a 1 MHz burst with a phase flip.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+</style>
+
+<rect x="20" y="113" width="36" height="24" rx="5" class="fill-bg"/>
+<text x="38" y="105" text-anchor="middle" class="t-sm">pigtail</text>
+<path d="M56,120 Q100,80 170,80" class="w" style="stroke-width:3"/>
+<path d="M56,130 Q100,170 170,170" class="w" style="stroke-width:3"/>
+<circle cx="174" cy="80" r="5" class="dot-sig"/><text x="174" y="66" text-anchor="middle" class="t-b t-sig">BUS+</text>
+<circle cx="174" cy="170" r="5" class="dot"/><text x="174" y="194" text-anchor="middle" class="t-b">GND</text>
+<rect x="250" y="16" width="130" height="92" rx="10" class="box"/>
+<rect x="264" y="28" width="102" height="32" rx="4" class="box-sunk"/>
+<text x="315" y="50" text-anchor="middle" class="t-mono t-b" style="font-size:16px">8.2 V⎓</text>
+<text x="315" y="80" text-anchor="middle" class="t-sm">multimeter · DC V</text>
+<path d="M290,108 Q260,90 178,82" class="w-sig"/>
+<path d="M340,108 Q330,160 178,170" class="w"/>
+<text x="248" y="134" text-anchor="end" class="t-sm">red probe</text>
+<text x="350" y="142" class="t-sm">black probe</text>
+<line x1="180" y1="80" x2="200" y2="80" class="w"/>
+<path d="M200,80 L200,40 L410,40" class="w"/>
+<line x1="410" y1="28" x2="410" y2="52" class="w" style="stroke-width:2.4"/>
+<line x1="418" y1="28" x2="418" y2="52" class="w" style="stroke-width:2.4"/>
+<text x="414" y="20" text-anchor="middle" class="t-sm">1 nF</text>
+<path d="M418,40 L450,40 L450,90 L470,90" class="w"/>
+<text x="434" y="110" text-anchor="middle" class="t-sm">probe tip</text>
+<path d="M180,170 L200,210 L470,210 L470,196" class="w-gnd"/>
+<text x="320" y="228" text-anchor="middle" class="t-sm">ground clip</text>
+<rect x="470" y="30" width="270" height="166" rx="10" class="box"/>
+<rect x="488" y="44" width="234" height="122" rx="4" class="box-sunk"/>
+<line x1="488" y1="105" x2="722" y2="105" class="grid"/>
+<line x1="605" y1="44" x2="605" y2="166" class="grid"/>
+<polyline points="496.0,105.0 496.6,101.2 497.2,97.6 497.8,94.1 498.4,90.9 499.0,88.0 499.6,85.6 500.2,83.6 500.8,82.2 501.4,81.3 502.1,81.0 502.7,81.3 503.3,82.2 503.9,83.6 504.5,85.6 505.1,88.0 505.7,90.9 506.3,94.1 506.9,97.6 507.5,101.2 508.1,105.0 508.7,108.8 509.3,112.4 509.9,115.9 510.5,119.1 511.1,122.0 511.7,124.4 512.4,126.4 513.0,127.8 513.6,128.7 514.2,129.0 514.8,128.7 515.4,127.8 516.0,126.4 516.6,124.4 517.2,122.0 517.8,119.1 518.4,115.9 519.0,112.4 519.6,108.8 520.2,105.0 520.8,101.2 521.4,97.6 522.0,94.1 522.6,90.9 523.2,88.0 523.9,85.6 524.5,83.6 525.1,82.2 525.7,81.3 526.3,81.0 526.9,81.3 527.5,82.2 528.1,83.6 528.7,85.6 529.3,88.0 529.9,90.9 530.5,94.1 531.1,97.6 531.7,101.2 532.3,105.0 532.9,108.8 533.5,112.4 534.1,115.9 534.8,119.1 535.4,122.0 536.0,124.4 536.6,126.4 537.2,127.8 537.8,128.7 538.4,129.0 539.0,128.7 539.6,127.8 540.2,126.4 540.8,124.4 541.4,122.0 542.0,119.1 542.6,115.9 543.2,112.4 543.8,108.8 544.4,105.0 545.0,101.2 545.7,97.6 546.3,94.1 546.9,90.9 547.5,88.0 548.1,85.6 548.7,83.6 549.3,82.2 549.9,81.3 550.5,81.0 551.1,81.3 551.7,82.2 552.3,83.6 552.9,85.6 553.5,88.0 554.1,90.9 554.7,94.1 555.3,97.6 556.0,101.2 556.6,105.0 557.2,108.8 557.8,112.4 558.4,115.9 559.0,119.1 559.6,122.0 560.2,124.4 560.8,126.4 561.4,127.8 562.0,128.7 562.6,129.0 563.2,128.7 563.8,127.8 564.4,126.4 565.0,124.4 565.6,122.0 566.2,119.1 566.9,115.9 567.5,112.4 568.1,108.8 568.7,105.0 569.3,101.2 569.9,97.6 570.5,94.1 571.1,90.9 571.7,88.0 572.3,85.6 572.9,83.6 573.5,82.2 574.1,81.3 574.7,81.0 575.3,81.3 575.9,82.2 576.5,83.6 577.1,85.6 577.8,88.0 578.4,90.9 579.0,94.1 579.6,97.6 580.2,101.2 580.8,105.0 581.4,108.8 582.0,112.4 582.6,115.9 583.2,119.1 583.8,122.0 584.4,124.4 585.0,126.4 585.6,127.8 586.2,128.7 586.8,129.0 587.4,128.7 588.0,127.8 588.6,126.4 589.3,124.4 589.9,122.0 590.5,119.1 591.1,115.9 591.7,112.4 592.3,108.8 592.9,105.0 593.5,101.2 594.1,97.6 594.7,94.1 595.3,90.9 595.9,88.0 596.5,85.6 597.1,83.6 597.7,82.2 598.3,81.3 598.9,81.0 599.5,81.3 600.2,82.2 600.8,83.6 601.4,85.6 602.0,88.0 602.6,90.9 603.2,94.1 603.8,97.6 604.4,101.2 605.0,105.0 605.6,101.2 606.2,97.6 606.8,94.1 607.4,90.9 608.0,88.0 608.6,85.6 609.2,83.6 609.8,82.2 610.5,81.3 611.1,81.0 611.7,81.3 612.3,82.2 612.9,83.6 613.5,85.6 614.1,88.0 614.7,90.9 615.3,94.1 615.9,97.6 616.5,101.2 617.1,105.0 617.7,108.8 618.3,112.4 618.9,115.9 619.5,119.1 620.1,122.0 620.7,124.4 621.4,126.4 622.0,127.8 622.6,128.7 623.2,129.0 623.8,128.7 624.4,127.8 625.0,126.4 625.6,124.4 626.2,122.0 626.8,119.1 627.4,115.9 628.0,112.4 628.6,108.8 629.2,105.0 629.8,101.2 630.4,97.6 631.0,94.1 631.6,90.9 632.2,88.0 632.9,85.6 633.5,83.6 634.1,82.2 634.7,81.3 635.3,81.0 635.9,81.3 636.5,82.2 637.1,83.6 637.7,85.6 638.3,88.0 638.9,90.9 639.5,94.1 640.1,97.6 640.7,101.2 641.3,105.0 641.9,108.8 642.5,112.4 643.1,115.9 643.8,119.1 644.4,122.0 645.0,124.4 645.6,126.4 646.2,127.8 646.8,128.7 647.4,129.0 648.0,128.7 648.6,127.8 649.2,126.4 649.8,124.4 650.4,122.0 651.0,119.1 651.6,115.9 652.2,112.4 652.8,108.8 653.4,105.0 654.0,101.2 654.7,97.6 655.3,94.1 655.9,90.9 656.5,88.0 657.1,85.6 657.7,83.6 658.3,82.2 658.9,81.3 659.5,81.0 660.1,81.3 660.7,82.2 661.3,83.6 661.9,85.6 662.5,88.0 663.1,90.9 663.7,94.1 664.3,97.6 665.0,101.2 665.6,105.0 666.2,108.8 666.8,112.4 667.4,115.9 668.0,119.1 668.6,122.0 669.2,124.4 669.8,126.4 670.4,127.8 671.0,128.7 671.6,129.0 672.2,128.7 672.8,127.8 673.4,126.4 674.0,124.4 674.6,122.0 675.2,119.1 675.9,115.9 676.5,112.4 677.1,108.8 677.7,105.0 678.3,101.2 678.9,97.6 679.5,94.1 680.1,90.9 680.7,88.0 681.3,85.6 681.9,83.6 682.5,82.2 683.1,81.3 683.7,81.0 684.3,81.3 684.9,82.2 685.5,83.6 686.1,85.6 686.8,88.0 687.4,90.9 688.0,94.1 688.6,97.6 689.2,101.2 689.8,105.0 690.4,108.8 691.0,112.4 691.6,115.9 692.2,119.1 692.8,122.0 693.4,124.4 694.0,126.4 694.6,127.8 695.2,128.7 695.8,129.0 696.4,128.7 697.0,127.8 697.6,126.4 698.3,124.4 698.9,122.0 699.5,119.1 700.1,115.9 700.7,112.4 701.3,108.8 701.9,105.0 702.5,101.2 703.1,97.6 703.7,94.1 704.3,90.9 704.9,88.0 705.5,85.6 706.1,83.6 706.7,82.2 707.3,81.3 707.9,81.0 708.5,81.3 709.2,82.2 709.8,83.6 710.4,85.6 711.0,88.0 711.6,90.9 712.2,94.1 712.8,97.6 713.4,101.2 714.0,105.0" class="w-sig"/>
+<text x="605" y="186" text-anchor="middle" class="t-sm">AC coupling · 0.5 µs/div · note p-p</text>
+<text x="612" y="60" class="t-sm t-sig">phase flip</text>
+</svg>

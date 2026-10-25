@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 255" role="img" aria-label="Cut the 150 mm EW-SD50 about 80 mm from one plug; strip 15 mm of jacket and 3 mm of each core; mark BUS+ with red heat-shrink.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+</style>
+
+<rect x="30" y="48" width="40" height="24" rx="5" class="fill-bg"/><text x="50" y="40" text-anchor="middle" class="t-sm">plug</text>
+<line x1="70" y1="60" x2="330" y2="60" class="w-cable"/>
+<line x1="330" y1="60" x2="700" y2="60" class="w-cable" style="opacity:.3"/>
+<line x1="330" y1="28" x2="330" y2="92" class="w-dash" style="stroke:var(--signal)"/>
+<text x="330" y="22" text-anchor="middle" class="t-b t-sig">cut</text>
+<text x="515" y="48" text-anchor="middle" class="t-sm">leftover piece (bin it, or keep for practice)</text>
+<line x1="70" y1="104" x2="330" y2="104" class="w"/><line x1="70" y1="96" x2="70" y2="112" class="w"/><line x1="330" y1="96" x2="330" y2="112" class="w"/>
+<text x="200" y="124" text-anchor="middle" class="t-mono">≈ 80 mm</text>
+<text x="30" y="160" class="t-b">Cut end, close up</text>
+<rect x="60" y="174" width="200" height="34" rx="6" class="box-sunk"/><text x="160" y="196" text-anchor="middle" class="t-sm">outer jacket</text>
+<line x1="260" y1="182" x2="400" y2="182" class="w" style="stroke-width:7"/>
+<line x1="260" y1="200" x2="400" y2="200" class="w" style="stroke-width:7;opacity:.55"/>
+<line x1="400" y1="182" x2="432" y2="182" class="w-sig" style="stroke-width:2.5"/>
+<line x1="400" y1="200" x2="432" y2="200" class="w-sig" style="stroke-width:2.5"/>
+<rect x="300" y="174" width="56" height="16" rx="3" class="box-sig" style="opacity:.85"/>
+<text x="328" y="168" text-anchor="middle" class="t-sm t-sig">red heat-shrink = BUS+</text>
+<line x1="260" y1="226" x2="400" y2="226" class="w"/><line x1="260" y1="220" x2="260" y2="232" class="w"/><line x1="400" y1="220" x2="400" y2="232" class="w"/>
+<text x="330" y="246" text-anchor="middle" class="t-mono">15 mm</text>
+<line x1="400" y1="226" x2="432" y2="226" class="w"/><line x1="432" y1="220" x2="432" y2="232" class="w"/>
+<text x="416" y="246" text-anchor="middle" class="t-mono">3 mm</text>
+<text x="460" y="186" class="t-sm">bare copper: keep the two tips apart</text>
+<text x="460" y="204" class="t-sm">until each one is covered</text>
+</svg>

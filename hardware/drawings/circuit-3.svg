@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-label="PCB layout, 60 by 40 millimetres: pigtail pads on the left edge, the power chain F1, D1, TVS1, JP1, L1, C2 and buck module along the top, the signal chain C1, R1, D2, R2, R3, comparator U2, R4, RV1 and R7 bottom-left, and the XIAO bottom-right with D3 receiving the signal and 3V3 fed through a bottom-layer trace.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+</style>
+
+      <defs><pattern id="pour1" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.1" class="pcb-dot"/></pattern></defs>
+      <rect x="40" y="40" width="600" height="400" rx="14" class="pcb-board"/>
+      <rect x="46" y="46" width="588" height="388" rx="10" fill="url(#pour1)"/>
+      <circle cx="60" cy="60" r="7" class="pcb-hole"/><circle cx="620" cy="60" r="7" class="pcb-hole"/>
+      <circle cx="60" cy="420" r="7" class="pcb-hole"/><circle cx="620" cy="420" r="7" class="pcb-hole"/>
+      <!-- zones -->
+      <rect x="84" y="54" width="542" height="160" rx="6" class="pcb-zone-p"/>
+      <text x="92" y="70" class="pcb-silkt">POWER</text>
+      <rect x="84" y="236" width="360" height="194" rx="6" class="pcb-zone-s"/>
+      <text x="92" y="252" class="pcb-silkt">SIGNAL</text>
+      <!-- J1 -->
+      <rect x="52" y="218" width="26" height="24" rx="3" class="pcb-pad"/>
+      <text x="50" y="212" class="pcb-silkt">BUS+</text>
+      <rect x="52" y="368" width="26" height="24" rx="3" class="pcb-pad"/>
+      <text x="50" y="404" class="pcb-silkt">GND</text>
+      <rect x="46" y="272" width="12" height="70" rx="6" class="pcb-slot"/>
+      <!-- power chain -->
+      <path d="M78,230 H96 V124 H110" class="pcb-tp"/>
+      <rect x="110" y="114" width="14" height="20" class="pcb-pad"/><rect x="138" y="114" width="14" height="20" class="pcb-pad"/>
+      <rect x="106" y="110" width="50" height="28" class="pcb-silk"/><text x="131" y="104" text-anchor="middle" class="pcb-silkt">F1</text>
+      <path d="M152,124 H185" class="pcb-tp"/>
+      <rect x="185" y="112" width="16" height="24" class="pcb-pad"/><rect x="223" y="112" width="16" height="24" class="pcb-pad"/>
+      <rect x="181" y="108" width="62" height="32" class="pcb-silk"/><line x1="234" y1="108" x2="234" y2="140" class="pcb-silk" style="stroke-width:3"/>
+      <text x="212" y="102" text-anchor="middle" class="pcb-silkt">D1</text>
+      <path d="M239,124 H285" class="pcb-tp"/>
+      <path d="M262,124 V150" class="pcb-tp"/>
+      <rect x="252" y="150" width="20" height="14" class="pcb-pad"/><rect x="252" y="182" width="20" height="14" class="pcb-pad"/>
+      <rect x="248" y="146" width="28" height="54" class="pcb-silk"/><text x="282" y="178" class="pcb-silkt">TVS1</text>
+      <path d="M262,196 V204" class="pcb-tg"/><circle cx="262" cy="208" r="4.5" class="pcb-via"/>
+      <rect x="285" y="117" width="14" height="14" class="pcb-pad"/><rect x="307" y="117" width="14" height="14" class="pcb-pad"/>
+      <rect x="281" y="112" width="44" height="24" class="pcb-silk"/><text x="303" y="106" text-anchor="middle" class="pcb-silkt">JP1</text>
+      <path d="M321,124 H350" class="pcb-tp"/>
+      <rect x="350" y="104" width="16" height="40" class="pcb-pad"/><rect x="408" y="104" width="16" height="40" class="pcb-pad"/>
+      <rect x="346" y="86" width="82" height="76" class="pcb-silk"/><circle cx="387" cy="124" r="30" class="pcb-silk"/>
+      <text x="387" y="80" text-anchor="middle" class="pcb-silkt">L1 470µH</text>
+      <path d="M424,124 H532" class="pcb-tp"/>
+      <path d="M470,124 V140" class="pcb-tp"/>
+      <rect x="462" y="140" width="16" height="12" class="pcb-pad"/><rect x="462" y="164" width="16" height="12" class="pcb-pad"/>
+      <text x="486" y="162" class="pcb-silkt">C2</text>
+      <path d="M470,176 V182" class="pcb-tg"/><circle cx="470" cy="186" r="4.5" class="pcb-via"/>
+      <!-- U1 -->
+      <rect x="520" y="62" width="100" height="130" rx="4" class="pcb-silk"/>
+      <text x="580" y="92" text-anchor="middle" class="pcb-silkt">U1</text>
+      <text x="580" y="106" text-anchor="middle" class="pcb-silkt">3.3 V buck</text>
+      <circle cx="532" cy="124" r="6" class="pcb-pad"/><text x="545" y="128" class="pcb-silkt">VIN</text>
+      <circle cx="532" cy="150" r="6" class="pcb-pad"/><text x="545" y="154" class="pcb-silkt">GND</text>
+      <circle cx="532" cy="176" r="6" class="pcb-pad"/><text x="545" y="180" class="pcb-silkt">OUT</text>
+      <!-- 3V3 out: top layer to via, bottom layer under the XIAO -->
+      <path d="M532,176 H505 V212" class="pcb-tp"/>
+      <path d="M486,201 H505" class="pcb-tp"/>
+      <rect x="452" y="193" width="12" height="16" class="pcb-pad"/><rect x="474" y="193" width="12" height="16" class="pcb-pad"/>
+      <text x="446" y="205" text-anchor="end" class="pcb-silkt">C3</text>
+      <path d="M505,212 H600 V300" class="pcb-tb"/>
+      <circle cx="505" cy="212" r="4.5" class="pcb-via"/><circle cx="600" cy="300" r="4.5" class="pcb-via"/>
+      <path d="M600,300 H617" class="pcb-tp"/>
+      <!-- XIAO -->
+      <rect x="455" y="220" width="175" height="210" rx="10" class="pcb-silk"/>
+      <rect x="523" y="420" width="38" height="20" rx="4" class="pcb-silk"/>
+      <text x="542" y="414" text-anchor="middle" class="pcb-silkt">USB-C</text>
+      <text x="542" y="330" text-anchor="middle" class="pcb-silkt">XIAO ESP32-S3</text>
+      <text x="542" y="345" text-anchor="middle" class="pcb-silkt">(top view)</text>
+      <circle cx="462" cy="249" r="6" class="pcb-pad"/><text x="474" y="253" class="pcb-silkt">D0</text>
+      <circle cx="462" cy="274.4" r="6" class="pcb-pad"/><text x="474" y="278" class="pcb-silkt">D1</text>
+      <circle cx="462" cy="299.8" r="6" class="pcb-pad"/><text x="474" y="304" class="pcb-silkt">D2</text>
+      <circle cx="462" cy="325.2" r="6" class="pcb-pad"/><circle cx="462" cy="325.2" r="10" class="pcb-ring"/><text x="478" y="329" class="pcb-silkt">D3</text>
+      <circle cx="462" cy="350.6" r="6" class="pcb-pad"/><text x="474" y="355" class="pcb-silkt">D4</text>
+      <circle cx="462" cy="376" r="6" class="pcb-pad"/><text x="474" y="380" class="pcb-silkt">D5</text>
+      <circle cx="462" cy="401.4" r="6" class="pcb-pad"/><text x="474" y="405" class="pcb-silkt">D6</text>
+      <circle cx="623" cy="249" r="6" class="pcb-pad"/><text x="611" y="253" text-anchor="end" class="pcb-silkt">5V</text>
+      <circle cx="623" cy="274.4" r="6" class="pcb-pad"/><text x="611" y="278" text-anchor="end" class="pcb-silkt">GND</text>
+      <circle cx="623" cy="299.8" r="6" class="pcb-pad"/><text x="611" y="290" text-anchor="end" class="pcb-silkt">3V3</text>
+      <circle cx="623" cy="325.2" r="6" class="pcb-pad"/><text x="611" y="329" text-anchor="end" class="pcb-silkt">D10</text>
+      <circle cx="623" cy="350.6" r="6" class="pcb-pad"/><text x="611" y="355" text-anchor="end" class="pcb-silkt">D9</text>
+      <circle cx="623" cy="376" r="6" class="pcb-pad"/><text x="611" y="380" text-anchor="end" class="pcb-silkt">D8</text>
+      <circle cx="623" cy="401.4" r="6" class="pcb-pad"/><text x="611" y="405" text-anchor="end" class="pcb-silkt">D7</text>
+      <!-- signal chain -->
+      <path d="M96,230 V325 H110" class="pcb-ts"/>
+      <rect x="110" y="318" width="11" height="14" class="pcb-pad"/><rect x="131" y="318" width="11" height="14" class="pcb-pad"/>
+      <text x="126" y="310" text-anchor="middle" class="pcb-silkt">C1</text>
+      <path d="M142,325 H160" class="pcb-ts"/>
+      <rect x="160" y="318" width="11" height="14" class="pcb-pad"/><rect x="181" y="318" width="11" height="14" class="pcb-pad"/>
+      <text x="176" y="310" text-anchor="middle" class="pcb-silkt">R1</text>
+      <path d="M192,325 H284" class="pcb-ts"/>
+      <!-- D2 clamp -->
+      <path d="M215,325 V352" class="pcb-ts"/>
+      <rect x="205" y="352" width="10" height="12" class="pcb-pad"/><rect x="225" y="352" width="10" height="12" class="pcb-pad"/><rect x="215" y="376" width="10" height="12" class="pcb-pad"/>
+      <rect x="201" y="348" width="38" height="44" class="pcb-silk"/><text x="196" y="372" text-anchor="end" class="pcb-silkt">D2</text>
+      <!-- R2 / R3 bias -->
+      <rect x="254" y="268" width="12" height="11" class="pcb-pad"/><rect x="254" y="289" width="12" height="11" class="pcb-pad"/>
+      <path d="M260,300 V325" class="pcb-ts"/><path d="M260,268 V263" class="pcb-tg"/><circle cx="260" cy="259" r="4.5" class="pcb-via"/>
+      <text x="242" y="290" text-anchor="end" class="pcb-silkt">R2</text>
+      <path d="M260,325 V350" class="pcb-ts"/>
+      <rect x="254" y="350" width="12" height="11" class="pcb-pad"/><rect x="254" y="371" width="12" height="11" class="pcb-pad"/>
+      <path d="M260,382 V387" class="pcb-tg"/><circle cx="260" cy="391" r="4.5" class="pcb-via"/>
+      <text x="272" y="370" class="pcb-silkt">R3</text>
+      <!-- U2 + C4 -->
+      <rect x="298" y="306" width="24" height="38" class="pcb-silk"/>
+      <rect x="284" y="309" width="12" height="8" class="pcb-pad"/><rect x="284" y="321" width="12" height="8" class="pcb-pad"/><rect x="284" y="333" width="12" height="8" class="pcb-pad"/>
+      <rect x="324" y="309" width="12" height="8" class="pcb-pad"/><rect x="324" y="321" width="12" height="8" class="pcb-pad"/><rect x="324" y="333" width="12" height="8" class="pcb-pad"/>
+      <text x="310" y="358" text-anchor="middle" class="pcb-silkt">U2</text>
+      <rect x="300" y="286" width="9" height="9" class="pcb-pad"/><rect x="313" y="286" width="9" height="9" class="pcb-pad"/>
+      <text x="311" y="280" text-anchor="middle" class="pcb-silkt">C4</text>
+      <!-- R4 feedback -->
+      <path d="M336,313 H350 V294" class="pcb-ts"/>
+      <rect x="344" y="283" width="12" height="11" class="pcb-pad"/><rect x="344" y="262" width="12" height="11" class="pcb-pad"/>
+      <path d="M350,262 V250 H275 V325" class="pcb-ts"/><circle cx="275" cy="325" r="3.5" class="pcb-pad"/>
+      <text x="362" y="276" class="pcb-silkt">R4</text>
+      <!-- R7 to D3 -->
+      <path d="M350,313 V325 H370" class="pcb-ts"/>
+      <rect x="370" y="318" width="11" height="14" class="pcb-pad"/><rect x="391" y="318" width="11" height="14" class="pcb-pad"/>
+      <text x="386" y="310" text-anchor="middle" class="pcb-silkt">R7</text>
+      <path d="M402,325 H456" class="pcb-ts"/>
+      <!-- RV1 + R5/R6 -->
+      <rect x="278" y="388" width="54" height="30" class="pcb-silk"/>
+      <rect x="283" y="396" width="12" height="14" class="pcb-pad"/><rect x="299" y="396" width="12" height="14" class="pcb-pad"/><rect x="315" y="396" width="12" height="14" class="pcb-pad"/>
+      <text x="305" y="428" text-anchor="middle" class="pcb-silkt">RV1</text>
+      <path d="M305,396 V368 H290 V341" class="pcb-ts"/>
+      <path d="M327,403 H340" class="pcb-tg"/>
+      <rect x="340" y="396" width="11" height="14" class="pcb-pad"/><rect x="361" y="396" width="11" height="14" class="pcb-pad"/>
+      <path d="M372,403 H380" class="pcb-tg"/><circle cx="384" cy="403" r="4.5" class="pcb-via"/>
+      <text x="356" y="390" text-anchor="middle" class="pcb-silkt">R5</text>
+      <rect x="236" y="404" width="11" height="12" class="pcb-pad"/><rect x="257" y="404" width="11" height="12" class="pcb-pad"/>
+      <path d="M268,410 H283" class="pcb-tg"/><path d="M236,410 H228" class="pcb-tg"/><circle cx="224" cy="410" r="4.5" class="pcb-via"/>
+      <text x="252" y="428" text-anchor="middle" class="pcb-silkt">R6</text>
+      <!-- dimensions -->
+      <line x1="40" y1="468" x2="640" y2="468" class="w"/><line x1="40" y1="460" x2="40" y2="476" class="w"/><line x1="640" y1="460" x2="640" y2="476" class="w"/>
+      <text x="340" y="492" text-anchor="middle" class="t-mono">60 mm</text>
+      <line x1="660" y1="40" x2="660" y2="440" class="w"/><line x1="652" y1="40" x2="668" y2="40" class="w"/><line x1="652" y1="440" x2="668" y2="440" class="w"/>
+      <text x="676" y="244" class="t-mono">40 mm</text>
+      <!-- legend -->
+      <rect x="700" y="40" width="190" height="250" rx="10" class="pcb-board"/>
+      <text x="714" y="64" class="pcb-silkt" style="font-size:12px">LEGEND</text>
+      <line x1="716" y1="88" x2="752" y2="88" class="pcb-tp"/><text x="762" y="92" class="pcb-silkt">power trace 0.5 mm</text>
+      <line x1="716" y1="114" x2="752" y2="114" class="pcb-ts"/><text x="762" y="118" class="pcb-silkt">signal 0.25 mm</text>
+      <line x1="716" y1="140" x2="752" y2="140" class="pcb-tb"/><text x="762" y="144" class="pcb-silkt">bottom layer</text>
+      <line x1="716" y1="166" x2="752" y2="166" class="pcb-tg"/><text x="762" y="170" class="pcb-silkt">local / GND link</text>
+      <rect x="726" y="182" width="16" height="14" class="pcb-pad"/><text x="762" y="194" class="pcb-silkt">pad</text>
+      <circle cx="734" cy="216" r="4.5" class="pcb-via"/><text x="762" y="220" class="pcb-silkt">via to GND/3V3</text>
+      <rect x="722" y="234" width="24" height="16" class="pcb-silk"/><text x="762" y="246" class="pcb-silkt">silkscreen</text>
+      <rect x="722" y="260" width="24" height="16" fill="url(#pour1)"/><text x="762" y="272" class="pcb-silkt">GND pour</text>
+    </svg>

@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 225" role="img" aria-label="Stage B: BUS+ through a multimeter on the milliamp range, fuse and diode, closed JP1, choke and buck converter to the XIAO 3V3 pin; USB unplugged; scope through 1 nF checks the carrier is unchanged.">
+<style>
+svg { --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--fg); background: var(--surface); }
+svg text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+svg .t-sm { font-size: 11.5px; fill: var(--muted); }
+svg .t-mono { font-family: var(--mono); font-size: 11.5px; }
+svg .t-b { font-weight: 700; }
+svg .t-sig { fill: var(--signal); }
+svg .t-pwr { fill: var(--power); }
+svg .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+svg .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+svg .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+svg .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+svg .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+svg .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+svg .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+svg .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+svg .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+svg .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .dot { fill: currentColor; }
+svg .dot-sig { fill: var(--signal); }
+svg .dot-pwr { fill: var(--power); }
+svg .fill-fg { fill: currentColor; }
+svg .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+svg .hl { fill: var(--signal-soft); }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+svg .pcb-dot { fill: #1f5636; }
+svg .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+svg .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+svg .pcb-pad { fill: #d8b25a; }
+svg .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+svg .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+svg .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+svg .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+svg .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+svg .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+svg .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+</style>
+
+<defs><marker id="m8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="fill-fg"/></marker></defs>
+<text x="20" y="74" class="t-mono t-pwr">BUS+</text>
+<line x1="20" y1="85" x2="100" y2="85" class="w-pwr"/>
+<circle cx="60" cy="85" r="3.5" class="dot-pwr"/>
+<rect x="100" y="58" width="110" height="54" rx="8" class="box"/>
+<text x="155" y="82" text-anchor="middle" class="t-mono t-b">17.3 mA</text>
+<text x="155" y="100" text-anchor="middle" class="t-sm">meter in series</text>
+<line x1="210" y1="85" x2="240" y2="85" class="w-pwr"/>
+<rect x="240" y="66" width="80" height="38" rx="6" class="box-sunk"/><text x="280" y="90" text-anchor="middle" class="t-sm">F1 · D1</text>
+<line x1="320" y1="85" x2="350" y2="85" class="w-pwr"/>
+<circle cx="354" cy="85" r="5" class="fill-bg"/><circle cx="384" cy="85" r="5" class="fill-bg"/>
+<rect x="350" y="70" width="38" height="10" rx="3" class="dot-pwr"/>
+<text x="369" y="58" text-anchor="middle" class="t-b t-pwr">JP1 closed</text>
+<line x1="389" y1="85" x2="420" y2="85" class="w-pwr"/>
+<rect x="420" y="66" width="80" height="38" rx="6" class="box-sunk"/><text x="460" y="90" text-anchor="middle" class="t-sm">L1 470 µH</text>
+<line x1="500" y1="85" x2="530" y2="85" class="w-pwr"/>
+<rect x="530" y="60" width="90" height="50" rx="6" class="box-pwr"/><text x="575" y="90" text-anchor="middle" class="t-sm">U1 → 3.3 V</text>
+<line x1="620" y1="85" x2="658" y2="85" class="w-pwr" marker-end="url(#m8)"/>
+<rect x="660" y="55" width="140" height="60" rx="8" class="box"/>
+<text x="730" y="82" text-anchor="middle" class="t-b">XIAO 3V3</text>
+<text x="730" y="100" text-anchor="middle" class="t-sm">boots from bike</text>
+<line x1="730" y1="115" x2="730" y2="190" class="w-dash"/>
+<line x1="716" y1="140" x2="744" y2="168" class="w-sig" style="stroke-width:3"/>
+<line x1="744" y1="140" x2="716" y2="168" class="w-sig" style="stroke-width:3"/>
+<text x="752" y="200" class="t-sm t-sig">USB unplugged</text>
+<line x1="60" y1="85" x2="60" y2="140" class="w"/>
+<line x1="48" y1="140" x2="72" y2="140" class="w" style="stroke-width:2.4"/>
+<line x1="48" y1="148" x2="72" y2="148" class="w" style="stroke-width:2.4"/>
+<line x1="60" y1="148" x2="60" y2="168" class="w"/>
+<rect x="20" y="168" width="200" height="40" rx="8" class="box"/>
+<text x="120" y="186" text-anchor="middle" class="t-sm">scope via 1 nF: carrier p-p</text>
+<text x="120" y="201" text-anchor="middle" class="t-sm t-b">same as Phase 3?</text>
+</svg>
