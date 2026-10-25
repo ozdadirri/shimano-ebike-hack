@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 360 280" role="img" aria-label="Ride screen with mini player: 23.4 km/h, NORMAL assist, battery 72 percent, range 48 km, and a now-playing strip with previous, pause and next buttons. Sample values.">
+<style>
+text{font-family:"Saira Condensed","Arial Narrow","Roboto Condensed",sans-serif;fill:#e8f1ee}
+.m{font-family:"JetBrains Mono",Menlo,Consolas,monospace}
+.dim{fill:#93a39e}.ok{fill:#6cd07a}.dark{fill:#1a0d06}
+</style>
+<defs>
+<g id="prev"><rect x="-9" y="-8" width="3" height="16"/><polygon points="8,-8 8,8 -5,0"/></g>
+<g id="next"><rect x="6" y="-8" width="3" height="16"/><polygon points="-8,-8 -8,8 5,0"/></g>
+<g id="pause"><rect x="-6" y="-8" width="4" height="16"/><rect x="2" y="-8" width="4" height="16"/></g>
+</defs>
+<rect width="360" height="280" rx="22" fill="#232a28"/>
+<rect x="16" y="16" width="328" height="248" rx="8" fill="#0b0f0e"/>
+<text x="32" y="42" class="m ok" font-size="11">BUS OK · 0 ERR</text>
+<text x="328" y="42" class="m dim" font-size="11" text-anchor="end">BLE ● 14:32</text>
+<text x="30" y="118" font-size="72" font-weight="700">23.4</text>
+<text x="168" y="118" font-size="18" class="dim">km/h</text>
+<text x="250" y="64" class="m dim" font-size="10">BATTERY</text>
+<text x="250" y="86" font-size="22" font-weight="700">72 %</text>
+<rect x="250" y="91" width="78" height="6" rx="3" fill="#232a28"/><rect x="250" y="91" width="56" height="6" rx="3" fill="#3cc5ba"/>
+<text x="250" y="114" class="m dim" font-size="10">RANGE</text>
+<text x="250" y="134" font-size="20" font-weight="700">48 km</text>
+<rect x="32" y="142" width="92" height="24" rx="6" fill="none" stroke="#34403c"/>
+<text x="78" y="159" font-size="13" font-weight="600" text-anchor="middle" class="dim" letter-spacing="1">ECO</text>
+<rect x="134" y="142" width="92" height="24" rx="6" fill="#ff8b52"/>
+<text x="180" y="159" font-size="13" font-weight="700" text-anchor="middle" class="dark" letter-spacing="1">NORMAL</text>
+<rect x="236" y="142" width="92" height="24" rx="6" fill="none" stroke="#34403c"/>
+<text x="282" y="159" font-size="13" font-weight="600" text-anchor="middle" class="dim" letter-spacing="1">HIGH</text>
+<rect x="32" y="178" width="296" height="72" rx="10" fill="#161e1b"/>
+<rect x="42" y="189" width="50" height="50" rx="6" fill="#2c3a35"/>
+<circle cx="61" cy="224" r="6" fill="#93a39e"/><rect x="65" y="199" width="3" height="25" fill="#93a39e"/><path d="M65,199 L80,195 L80,201 L68,204 Z" fill="#93a39e"/>
+<text x="102" y="207" font-size="16" font-weight="700">Sample Song</text>
+<text x="102" y="224" font-size="12" class="dim">Sample Artist · Spotify</text>
+<rect x="102" y="232" width="118" height="3" rx="1.5" fill="#232a28"/><rect x="102" y="232" width="50" height="3" rx="1.5" fill="#ff8b52"/>
+<use href="#prev" xlink:href="#prev" x="244" y="214" fill="#e8f1ee"/>
+<circle cx="276" cy="214" r="15" fill="#ff8b52"/>
+<use href="#pause" xlink:href="#pause" x="276" y="214" fill="#1a0d06"/>
+<use href="#next" xlink:href="#next" x="308" y="214" fill="#e8f1ee"/>
+</svg>

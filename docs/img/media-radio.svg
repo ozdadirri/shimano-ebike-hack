@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 360 280" role="img" aria-label="Internet radio screen: three stations with the second one live, a 92 percent buffer bar, and stop, pause and next-station buttons. Sample stations.">
+<style>
+text{font-family:"Saira Condensed","Arial Narrow","Roboto Condensed",sans-serif;fill:#e8f1ee}
+.m{font-family:"JetBrains Mono",Menlo,Consolas,monospace}
+.dim{fill:#93a39e}.ok{fill:#6cd07a}.acc{fill:#ff8b52}.dark{fill:#1a0d06}
+</style>
+<defs>
+<g id="next"><rect x="6" y="-8" width="3" height="16"/><polygon points="-8,-8 -8,8 5,0"/></g>
+<g id="pause"><rect x="-6" y="-8" width="4" height="16"/><rect x="2" y="-8" width="4" height="16"/></g>
+</defs>
+<rect width="360" height="280" rx="22" fill="#232a28"/>
+<rect x="16" y="16" width="328" height="248" rx="8" fill="#0b0f0e"/>
+<text x="32" y="42" class="m ok" font-size="11">BUS OK · 0 ERR</text>
+<text x="328" y="42" class="m dim" font-size="11" text-anchor="end">Wi-Fi ● 14:32</text>
+<text x="32" y="64" class="m acc" font-size="11">INTERNET RADIO · PHONE HOTSPOT</text>
+<rect x="32" y="74" width="296" height="34" rx="6" fill="#161e1b"/>
+<text x="46" y="96" font-size="15" font-weight="600">Station A · News</text>
+<text x="316" y="95" class="m dim" font-size="10" text-anchor="end">64k AAC</text>
+<rect x="32" y="114" width="296" height="34" rx="6" fill="#2a1a12" stroke="#ff8b52"/>
+<text x="46" y="136" font-size="15" font-weight="700">Station B · Indie</text>
+<text x="250" y="135" class="m dim" font-size="10" text-anchor="end">128k MP3</text>
+<rect x="262" y="123" width="54" height="16" rx="8" fill="#ff8b52"/>
+<text x="289" y="135" font-size="11" font-weight="700" text-anchor="middle" class="dark">LIVE</text>
+<rect x="32" y="154" width="296" height="34" rx="6" fill="#161e1b"/>
+<text x="46" y="176" font-size="15" font-weight="600">Station C · Jazz</text>
+<text x="316" y="175" class="m dim" font-size="10" text-anchor="end">128k MP3</text>
+<rect x="32" y="198" width="296" height="54" rx="10" fill="#161e1b"/>
+<text x="46" y="218" class="m dim" font-size="10">BUFFER</text>
+<rect x="46" y="226" width="120" height="5" rx="2.5" fill="#232a28"/><rect x="46" y="226" width="110" height="5" rx="2.5" fill="#3cc5ba"/>
+<text x="174" y="232" class="m dim" font-size="10">92 %</text>
+<rect x="228" y="217" width="16" height="16" rx="2" fill="#e8f1ee"/>
+<circle cx="276" cy="225" r="15" fill="#ff8b52"/>
+<use href="#pause" xlink:href="#pause" x="276" y="225" fill="#1a0d06"/>
+<use href="#next" xlink:href="#next" x="310" y="225" fill="#e8f1ee"/>
+</svg>

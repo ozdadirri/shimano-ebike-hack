@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 360 280" role="img" aria-label="MP3 player screen: microSD library with 214 tracks, four tracks listed with the second playing, and shuffle, previous, pause, next and repeat controls. Sample tracks.">
+<style>
+text{font-family:"Saira Condensed","Arial Narrow","Roboto Condensed",sans-serif;fill:#e8f1ee}
+.m{font-family:"JetBrains Mono",Menlo,Consolas,monospace}
+.dim{fill:#93a39e}.ok{fill:#6cd07a}.acc{fill:#ff8b52}
+</style>
+<defs>
+<g id="prev"><rect x="-9" y="-8" width="3" height="16"/><polygon points="8,-8 8,8 -5,0"/></g>
+<g id="next"><rect x="6" y="-8" width="3" height="16"/><polygon points="-8,-8 -8,8 5,0"/></g>
+<g id="pause"><rect x="-6" y="-8" width="4" height="16"/><rect x="2" y="-8" width="4" height="16"/></g>
+</defs>
+<rect width="360" height="280" rx="22" fill="#232a28"/>
+<rect x="16" y="16" width="328" height="248" rx="8" fill="#0b0f0e"/>
+<text x="32" y="42" class="m ok" font-size="11">BUS OK · 0 ERR</text>
+<text x="328" y="42" class="m dim" font-size="11" text-anchor="end">SD ● 14:32</text>
+<text x="32" y="64" class="m acc" font-size="11">MP3 · microSD · 214 TRACKS</text>
+<rect x="32" y="74" width="296" height="26" rx="5" fill="#161e1b"/>
+<text x="44" y="91" class="m dim" font-size="10">01</text><text x="70" y="92" font-size="14">Sample Track A</text><text x="316" y="91" class="m dim" font-size="10" text-anchor="end">3:21</text>
+<rect x="32" y="104" width="296" height="26" rx="5" fill="#2a1a12" stroke="#ff8b52"/>
+<rect x="42" y="117" width="3" height="7" fill="#ff8b52"/><rect x="47" y="112" width="3" height="12" fill="#ff8b52"/><rect x="52" y="115" width="3" height="9" fill="#ff8b52"/>
+<text x="70" y="122" font-size="14" font-weight="700">Sample Track B</text><text x="316" y="121" class="m dim" font-size="10" text-anchor="end">4:05</text>
+<rect x="32" y="134" width="296" height="26" rx="5" fill="#161e1b"/>
+<text x="44" y="151" class="m dim" font-size="10">03</text><text x="70" y="152" font-size="14">Sample Track C</text><text x="316" y="151" class="m dim" font-size="10" text-anchor="end">2:48</text>
+<rect x="32" y="164" width="296" height="26" rx="5" fill="#161e1b"/>
+<text x="44" y="181" class="m dim" font-size="10">04</text><text x="70" y="182" font-size="14">Sample Track D</text><text x="316" y="181" class="m dim" font-size="10" text-anchor="end">3:59</text>
+<rect x="32" y="198" width="296" height="54" rx="10" fill="#161e1b"/>
+<text x="46" y="229" class="m dim" font-size="10">SHUFFLE</text>
+<use href="#prev" xlink:href="#prev" x="200" y="225" fill="#e8f1ee"/>
+<circle cx="238" cy="225" r="16" fill="#ff8b52"/>
+<use href="#pause" xlink:href="#pause" x="238" y="225" fill="#1a0d06"/>
+<use href="#next" xlink:href="#next" x="276" y="225" fill="#e8f1ee"/>
+<text x="316" y="229" class="m dim" font-size="10" text-anchor="end">REPEAT</text>
+</svg>

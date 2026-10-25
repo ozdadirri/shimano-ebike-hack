@@ -59,6 +59,15 @@ nav.rail li { counter-increment: ch; }
 nav.rail a { display: grid; grid-template-columns: 26px 1fr; padding: 4px 8px; border-radius: 6px; color: var(--fg); text-decoration: none; font-size: 14px; }
 nav.rail a::before { content: counter(ch, decimal-leading-zero); font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 3px; }
 nav.rail a:hover, nav.rail a:focus-visible { background: var(--sunk); outline: none; }
+nav.rail a.addon { grid-template-columns: 26px 1fr; color: var(--signal); font-weight: 600; }
+nav.rail a.addon::before { content: "+"; font-size: 13px; padding-top: 1px; color: var(--signal); }
+.addon-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin: 18px 0; text-decoration: none; color: var(--fg); }
+.addon-card:hover, .addon-card:focus-visible { border-color: var(--signal); outline: none; }
+.addon-card img { width: 100%; height: auto; display: block; }
+.addon-card .k { font-family: var(--mono); font-size: 12px; color: var(--signal); letter-spacing: .05em; }
+.addon-card .t { font-family: var(--display); font-weight: 700; font-size: 28px; text-transform: uppercase; line-height: 1.1; margin: 4px 0 8px; }
+.addon-card .go { font-family: var(--display); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--signal); }
+@media (max-width: 560px) { .addon-card { grid-template-columns: minmax(0, 1fr); } }
 
 main { min-width: 0; padding-top: 40px; }
 section { padding-block: 28px; border-top: 1px solid var(--line); }
@@ -262,6 +271,8 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
     <li><a href="#glossary">Glossary</a></li>
     <li><a href="#sources">Sources</a></li>
   </ol>
+  <div class="tag" style="margin-top:22px">Add-ons</div>
+  <a class="addon" href="media.html">Ride Audio: Spotify, radio, MP3</a>
 </nav>
 
 <main>
@@ -306,6 +317,16 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
     </svg>
     <figcaption><b>The bike: Merida eSpresso 400 S EQ.</b> The dashed orange line is roughly where the E-TUBE wire runs inside the frame, from the motor up the down tube to the display on the handlebar. Everything in this guide plugs in at the display end, so nothing inside the frame gets touched.</figcaption>
   </figure>
+
+  <a class="addon-card" href="media.html">
+    <img src="img/media-spotify.svg" alt="Spotify now playing screen on the touchscreen">
+    <div>
+      <div class="k">ADD-ON</div>
+      <div class="t">Ride Audio</div>
+      <p>Control Spotify on your phone from the touchscreen, or let the ESP32-S3 play internet radio, MP3s and Spotify Connect through its own speaker.</p>
+      <span class="go">Open the add-on guide →</span>
+    </div>
+  </a>
 
   <div class="prose">
     <h3>Why this is a good learning project</h3>
@@ -1638,6 +1659,7 @@ void app_main(void)
       </ul>
     </div>
   </div>
+  <div class="note tip"><span class="h">Music on the same screen</span><p>The <a href="media.html">Ride Audio add-on</a> adds a mini player to this screen, plus Now playing, Radio and MP3 screens.</p></div>
 </section>
 
 <!-- ============ 12 CONTROL ============ -->
