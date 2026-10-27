@@ -338,7 +338,7 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
 <!-- ============ 02 LIMITS ============ -->
 <section id="limits">
   <h2><span class="ch">Chapter 02</span>What it can and can't do</h2>
-  <p class="prose">The genuine Shimano EW-EN100 does two jobs: it reports data, and it lets the official E-TUBE Project app change settings and update firmware. This build does the first job well. The second job needs Shimano's private protocol and signed firmware, so leave it to the real unit.</p>
+  <p class="prose">Shimano's own tools do two jobs: they report data, and they let E-TUBE Project change settings and update firmware. This build does the first job well. The second job needs Shimano's private protocol and signed firmware, so leave it to Shimano's tools.</p>
   <div class="tablewrap"><table>
     <thead><tr><th>Feature</th><th>Status</th><th>Why</th></tr></thead>
     <tbody>
@@ -348,12 +348,13 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
       <tr><td>Send data to a phone over Bluetooth LE</td><td><span class="pill yes">Yes</span></td><td>Standard BLE services you define yourself.</td></tr>
       <tr><td>Switch assist mode and lights from the touchscreen</td><td><span class="pill yes">Yes, with add-on</span></td><td>The ESP32 presses the bike's own switch buttons electronically (Chapter 12). The bus only ever sees genuine Shimano messages.</td></tr>
       <tr><td>Send your own commands on the bus</td><td><span class="pill hard">Research only</span></td><td>Needs a transmitter and decoded write commands. Unknown messages can put the motor into an error state.</td></tr>
-      <tr><td>Change assist tuning profiles</td><td><span class="pill no">Use the app</span></td><td>Done through E-TUBE Project with a genuine EW-EN100.</td></tr>
-      <tr><td>Work with the E-TUBE Project app / update firmware</td><td><span class="pill no">No</span></td><td>Firmware comes from Shimano's servers and is most likely signed. A failed update can brick a drive unit. Use a genuine EW-EN100.</td></tr>
+      <tr><td>Change assist tuning profiles</td><td><span class="pill no">Use the app</span></td><td>Done in E-TUBE Project. With the SC-E5000, that means Shimano's wired SM-PCE02 PC link or a Shimano dealer.</td></tr>
+      <tr><td>Work with the E-TUBE Project app / update firmware</td><td><span class="pill no">No</span></td><td>Firmware comes from Shimano's servers and is most likely signed. A failed update can brick a drive unit. Use Shimano's SM-PCE02 PC link or a dealer.</td></tr>
       <tr><td>Raise the 25 km/h assist limit</td><td><span class="pill no">Not covered</span></td><td>It's a legal limit for pedelecs in the EU and Australia. Removing it makes the bike legally a moped and affects insurance and warranty.</td></tr>
     </tbody>
   </table></div>
-  <div class="note tip"><span class="h">Recommended setup</span><p>Keep a genuine EW-EN100 for settings and firmware updates. Use this tap as your own read-only dashboard. Both can sit on the bus together.</p></div>
+  <div class="note tip"><span class="h">Recommended setup</span><p>Keep the SC-E5000 as the bike's display unit, and use this tap as your own read-only dashboard. For settings and firmware, use Shimano's wired SM-PCE02 PC link or a Shimano dealer.</p></div>
+  <div class="note"><span class="h">EW-EN100 or SC-E5000, not both</span><p>The EW-EN100 and the SC-E5000 fill the same role in a STEPS system, and Shimano's manual allows only one of them per bike. You can't add an EW-EN100 alongside your display. You can only replace the display with it (option D in Chapter 12), and then this touchscreen becomes your only screen.</p></div>
 </section>
 
 <!-- ============ 03 BUS ============ -->
@@ -1718,8 +1719,8 @@ void app_main(void)
 
   <h3>Can my touchscreen fully replace the display?</h3>
   <div class="prose">
-    <p>As the thing you <em>look at</em>: yes. As the thing that <em>runs</em> the bike: not by itself. On STEPS, the display (or an EW-EN100) is the system's user-interface unit. The motor expects a recognised Shimano unit in that role, and an unknown device won't be accepted.</p>
-    <p>A clean way to free up the handlebar is <b>option D</b>. Shimano lists display-less layouts for its STEPS motors, where an <b>EW-EN100 plus an assist switch</b> takes the display's place. If your E6100 supports that layout, remove the SC-E5000, fit the EW-EN100 (which also gives you the E-TUBE Project app), and your touchscreen becomes the only screen. <strong>Confirm with your Merida dealer or Shimano's compatibility chart for your exact motor and firmware first</strong>, and check which button toggles the lights in that layout.</p>
+    <p>As the thing you <em>look at</em>: yes. As the thing that <em>runs</em> the bike: not by itself. On STEPS, the display <em>or</em> an EW-EN100 is the system's user-interface unit. There can only be one of them, and the motor expects a recognised Shimano unit in that role. An unknown device won't be accepted.</p>
+    <p>A clean way to free up the handlebar is <b>option D</b>. Shimano lists display-less layouts for its STEPS motors, where an <b>EW-EN100 plus an assist switch</b> takes the display's place. If your E6100 supports that layout, remove the SC-E5000 and fit the EW-EN100 in its place. The two can't be fitted together. The EW-EN100 also gives you the E-TUBE Project phone app, and your touchscreen becomes the only screen. <strong>Confirm with your Merida dealer or Shimano's compatibility chart for your exact motor and firmware first</strong>, and check which button toggles the lights in that layout.</p>
   </div>
 
   <h3>Can I take the signals from the display's chips instead of the motor wire?</h3>
