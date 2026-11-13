@@ -265,6 +265,7 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
     <li><a href="#decode">Decoding the protocol</a></li>
     <li><a href="#firmware">Firmware</a></li>
     <li><a href="#dashboard">Touchscreen dashboard</a></li>
+    <li><a href="#ble">Bluetooth route (EW-EN100)</a></li>
     <li><a href="#control">Control assist + lights</a></li>
     <li><a href="#case">3D-printed case</a></li>
     <li><a href="#trouble">Troubleshooting</a></li>
@@ -328,6 +329,8 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
     </div>
   </a>
 
+  <div class="note tip"><span class="h">Working today: the Bluetooth route</span><p>On a bike with an <b>EW-EN100</b>, the ESP32-S3 reads live speed, assist mode, battery, range, trip and lights over Bluetooth LE, with no wires and no tap. It's tested on <b>Borghini</b>, the blue eSpresso this guide is built around. See <a href="#ble">Chapter 12</a> and the <a href="https://github.com/ozdadirri/shimano-ebike-hack/blob/main/docs/en100-ble-protocol.md">protocol notes</a>. The wired tap in the other chapters is still a design.</p></div>
+
   <div class="prose">
     <h3>Why this is a good learning project</h3>
     <p>You'll touch almost every layer of embedded engineering in one build: protecting a circuit from a vehicle's power bus, pulling a small high-frequency signal off a DC line, squaring it up with a comparator, timing pulses in hardware with the ESP32's RMT peripheral, working out an unknown protocol from captured data, and presenting the result on a touch UI and over Bluetooth Low Energy.</p>
@@ -342,11 +345,12 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
   <div class="tablewrap"><table>
     <thead><tr><th>Feature</th><th>Status</th><th>Why</th></tr></thead>
     <tbody>
+      <tr><td>Read live data over Bluetooth from an EW-EN100</td><td><span class="pill yes">Working</span></td><td>Speed, assist, battery, range, trip and lights, decoded and running on the dashboard (Chapter 12). Read-only, no tap needed.</td></tr>
       <tr><td>Plug into the bike without cutting factory wiring</td><td><span class="pill yes">Yes</span></td><td>Shimano's passive EW-JC130 Y-cable and EW-JC200 couplers do the splitting.</td></tr>
       <tr><td>Read speed, assist mode, battery, error codes</td><td><span class="pill hard">Yes, with work</span></td><td>The bus is undocumented. You find which bytes mean what (Chapter 09).</td></tr>
       <tr><td>Show data on your touchscreen</td><td><span class="pill yes">Yes</span></td><td>LVGL graphics library on the ESP32-S3.</td></tr>
       <tr><td>Send data to a phone over Bluetooth LE</td><td><span class="pill yes">Yes</span></td><td>Standard BLE services you define yourself.</td></tr>
-      <tr><td>Switch assist mode and lights from the touchscreen</td><td><span class="pill yes">Yes, with add-on</span></td><td>The ESP32 presses the bike's own switch buttons electronically (Chapter 12). The bus only ever sees genuine Shimano messages.</td></tr>
+      <tr><td>Switch assist mode and lights from the touchscreen</td><td><span class="pill yes">Yes, with add-on</span></td><td>The ESP32 presses the bike's own switch buttons electronically (Chapter 13). The bus only ever sees genuine Shimano messages.</td></tr>
       <tr><td>Send your own commands on the bus</td><td><span class="pill hard">Research only</span></td><td>Needs a transmitter and decoded write commands. Unknown messages can put the motor into an error state.</td></tr>
       <tr><td>Change assist tuning profiles</td><td><span class="pill no">Use the app</span></td><td>Done in E-TUBE Project. With the SC-E5000, that means Shimano's wired SM-PCE02 PC link or a Shimano dealer.</td></tr>
       <tr><td>Work with the E-TUBE Project app / update firmware</td><td><span class="pill no">No</span></td><td>Firmware comes from Shimano's servers and is most likely signed. A failed update can brick a drive unit. Use Shimano's SM-PCE02 PC link or a dealer.</td></tr>
@@ -354,7 +358,7 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
     </tbody>
   </table></div>
   <div class="note tip"><span class="h">Recommended setup</span><p>Keep the SC-E5000 as the bike's display unit, and use this tap as your own read-only dashboard. For settings and firmware, use Shimano's wired SM-PCE02 PC link or a Shimano dealer.</p></div>
-  <div class="note"><span class="h">EW-EN100 or SC-E5000, not both</span><p>The EW-EN100 and the SC-E5000 fill the same role in a STEPS system, and Shimano's manual allows only one of them per bike. You can't add an EW-EN100 alongside your display. You can only replace the display with it (option D in Chapter 12), and then this touchscreen becomes your only screen.</p></div>
+  <div class="note"><span class="h">EW-EN100 or SC-E5000, not both</span><p>The EW-EN100 and the SC-E5000 fill the same role in a STEPS system, and Shimano's manual allows only one of them per bike. You can't add an EW-EN100 alongside your display. You can only replace the display with it (option D in Chapter 13), and then this touchscreen becomes your only screen. With an EW-EN100 fitted, the touchscreen can read the bike over Bluetooth instead of through the tap (Chapter 12).</p></div>
 </section>
 
 <!-- ============ 03 BUS ============ -->
@@ -1641,7 +1645,7 @@ void app_main(void)
   <h2><span class="ch">Chapter 11</span>Touchscreen dashboard</h2>
   <div class="lcd-wrap">
     <div class="lcd" role="img" aria-label="Example dashboard layout with sample values: 23.4 km/h, NORMAL assist selected, battery 72 percent, range 48 km, trip 12.6 km.">
-      <div class="top"><span class="ok">BUS OK · 0 ERR</span><span>BLE ● 14:32</span></div>
+      <div class="top"><span class="ok">BUS OK</span><span>BLE ● 14:32</span></div>
       <div class="speed"><b>23.4</b><span>km/h</span></div>
       <div class="modes"><div>ECO</div><div class="on">NORMAL</div><div>HIGH</div></div>
       <div class="stats">
@@ -1651,7 +1655,7 @@ void app_main(void)
       </div>
     </div>
     <div class="lcd-notes">
-      <p><b>Example layout, sample values.</b> A 320×240 screen in landscape. On its own, the tap only <em>shows</em> the mode. Add the button add-on from Chapter 12 and tapping ECO, NORMAL or HIGH presses the bike's switch for you.</p>
+      <p><b>Example layout, sample values.</b> The finished firmware, <code>firmware/etube_ui</code>, runs on a 240×320 portrait LCDwiki ES3C28P and shows <b>BUS OK</b>, <b>NO BUS</b> or <b>SIM DATA</b> in the status bar. With the Bluetooth route (Chapter 12) it's live today. On its own, the tap only <em>shows</em> the mode. Add the button add-on from Chapter 13 and tapping ECO, NORMAL or HIGH presses the bike's switch for you.</p>
       <ul>
         <li>Use <code>esp_lvgl_port</code> with your display driver (ST7789, ILI9341 or GC9A01) and touch driver (CST816 or FT6236).</li>
         <li>Update the screen at most 10 times a second from the decoder's state, never from inside the capture task.</li>
@@ -1663,9 +1667,65 @@ void app_main(void)
   <div class="note tip"><span class="h">Music on the same screen</span><p>The <a href="media.html">Ride Audio add-on</a> adds a mini player to this screen, plus Now playing, Radio and MP3 screens.</p></div>
 </section>
 
-<!-- ============ 12 CONTROL ============ -->
+<!-- ============ 12 BLE ============ -->
+<section id="ble">
+  <h2><span class="ch">Chapter 12</span>Bluetooth route: reading the EW-EN100</h2>
+  <div class="prose">
+    <p>If your bike has Shimano's <b>EW-EN100</b> wireless unit, you can skip the tap. The EN100 already sends the bike's live data over Bluetooth LE, so an ESP32-S3 can read it with no wires to the bike at all. This route is <b>built and working</b>. It runs on <b>Borghini</b>, the blue eSpresso this guide is built around (named after Lamborghini: blue is 蓝 <i>lán</i>, <i>lam</i> in Cantonese).</p>
+    <p>It only reads. The ESP32 subscribes to notifications and never writes a value to the bike, so it can't change assist, settings, firmware or the 25 km/h limit.</p>
+  </div>
+
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>Bluetooth route (this chapter)</th><th>Wired tap (Chapters 03–10)</th></tr></thead>
+    <tbody>
+      <tr><td>Status</td><td><span class="pill yes">Working</span></td><td><span class="pill hard">Design, not built</span></td></tr>
+      <tr><td>Needs</td><td>An EW-EN100 on the bike, any ESP32-S3</td><td>Y-cable, couplers, custom PCB, scope work</td></tr>
+      <tr><td>Data so far</td><td>Speed, assist, battery, range per mode, trip, max/avg speed, cadence, lights</td><td>Whatever you decode from the bus</td></tr>
+      <tr><td>Catch</td><td>The EN100 takes <b>one connection at a time</b>: the ESP32 or Shimano Ride, not both</td><td>None, it only listens</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>How the links fit together</h3>
+<pre><code>            ESP32 connects out                    iPhone connects in
+ EW-EN100 ───────────────► ESP32-S3 ◄─────────────────── iPhone
+ HR sender ──────────────►  "E-TUBE Tap"                • music remote (Apple Media Service)
+ (HeartCast / chest strap)                              • bike data service a1e70001-…</code></pre>
+  <p class="prose">One shared scan finds both the EN100 and the heart-rate sender. The iPhone pairs with the ESP32 as <b>E-TUBE Tap</b> (Settings → Bluetooth) for music. Shimano Ride is the only thing that gets in the way, because it holds the EN100 link from the phone. <strong>Force-quit Shimano Ride while riding with the dashboard.</strong></p>
+
+  <h3>Step by step</h3>
+  <ol class="prose">
+    <li><strong>Free the EN100.</strong> Force-quit Shimano Ride and E-TUBE Project, or turn the phone's Bluetooth off in Settings. While anything is connected to the EN100, it doesn't advertise at all.</li>
+    <li><strong>Flash <code>firmware/ble_explorer</code></strong> and open the serial monitor at 115200 <em>before</em> resetting the board, otherwise you miss the scan.</li>
+    <li><strong>Find it with a diff.</strong> Scan with the bike off, then with it on. The new device advertises service <code>000018ef-5348-494d-414e-4f5f424c4500</code> (the UUIDs end in ASCII <code>SHIMANO_BLE</code>) under the bike's name, here <code>Borghini</code>.</li>
+    <li><strong>Connect</strong> by typing its number. Pairing is Just Works, with no passkey and no Shimano login. The ride data starts as soon as you subscribe.</li>
+    <li><strong>Capture experiments</strong> with <code>tools/en100_capture.py</code>: wait 15 s, step the assist up, toggle the light, spin the rear wheel with the bike on a stand. Changing one thing at a time works here exactly as in Chapter 09.</li>
+    <li><strong>Flash <code>firmware/etube_ui</code>.</strong> Put your EN100's address in <code>secrets.h</code> (<code>BIKE_ADDR</code>), so it ignores other riders' bikes. The status bar goes from SIM DATA to <b>BUS OK</b> within about 10 s of switching the bike on.</li>
+  </ol>
+
+  <h3>The data contract</h3>
+  <p class="prose">Everything comes from one characteristic, <code>2ac1</code> in service <code>18ef</code>. It sends a notification about every 250 ms, and byte 0 is the message type. Numbers are little-endian, and byte positions count from 0. Battery comes from the standard Battery service (<code>180f</code>/<code>2a19</code>).</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Type</th><th>Bytes</th><th>Field</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><code>02</code></td><td>1</td><td>Assist: 0 OFF, 1 ECO, 2 NORMAL, 3 HIGH</td><td><span class="pill yes">Confirmed</span></td></tr>
+      <tr><td><code>02</code></td><td>2–3</td><td>Speed, 0.1 km/h</td><td><span class="pill yes">Confirmed</span></td></tr>
+      <tr><td><code>02</code></td><td>5</td><td>Cadence, rpm</td><td><span class="pill hard">Likely</span></td></tr>
+      <tr><td><code>03</code></td><td>1–4</td><td>Trip distance, m</td><td><span class="pill hard">Likely</span></td></tr>
+      <tr><td><code>03</code></td><td>9–10 / 11–12</td><td>Average / maximum speed, 0.1 km/h</td><td><span class="pill hard">Likely</span></td></tr>
+      <tr><td><code>03</code></td><td>13–14 / 15–16 / 17–18</td><td>Range in HIGH / NORMAL / ECO, km</td><td><span class="pill yes">ECO confirmed</span></td></tr>
+      <tr><td><code>01</code></td><td>6</td><td>Light: 2 on, 1 off</td><td><span class="pill yes">Confirmed</span></td></tr>
+      <tr><td>—</td><td>—</td><td>Odometer, walk mode, error codes</td><td><span class="pill no">Not found yet</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="prose">The full GATT table, example frames, open questions and the next experiments are in <a href="https://github.com/ozdadirri/shimano-ebike-hack/blob/main/docs/en100-ble-protocol.md"><code>docs/en100-ble-protocol.md</code></a>, and the raw captures are in <code>captures/en100/</code>.</p>
+
+  <div class="note"><span class="h">Lessons from the first session</span><p>The EN100 vanished from scans whenever Shimano Ride was connected in the background. The first dashboard build connected only once, because NimBLE won't connect while a scan is running. A first guess at the odometer (6573 km) was wrong: it was two fields read as one number. Check every guess against the bike before you trust it.</p></div>
+  <div class="note tip"><span class="h">On screen</span><p>The Ride screen shows speed, the assist button that matches the bike, battery, range for the current mode (<code>-- km</code> with assist OFF), trip, and LIGHT ON / LIGHT OFF. If the link drops, the speed goes to 0 and the status bar shows NO BUS. It never falls back to simulated values. The assist buttons only follow the bike, so change mode with the bike's own switch.</p></div>
+</section>
+
+<!-- ============ 13 CONTROL ============ -->
 <section id="control">
-  <h2><span class="ch">Chapter 12</span>Controlling assist and lights</h2>
+  <h2><span class="ch">Chapter 13</span>Controlling assist and lights</h2>
   <div class="prose">
     <p>To make the touchscreen <em>change</em> things, something has to tell the motor. There are three places the ESP32 could do that from, and they carry very different risks. The diagram shows where each one attaches.</p>
   </div>
@@ -1766,7 +1826,7 @@ void app_main(void)
     <tbody>
       <tr><td><b>1</b> · modem → main chip</td><td>Already-demodulated bits, probably UART or SPI. No comparator and no BPSK decoding: PulseView can decode it directly.</td><td>The bus interface is a separate chip</td><td>Easiest to decode, if it exists</td></tr>
       <tr><td><b>2</b> · main chip → LCD driver</td><td>Exactly what's on screen (speed digits, battery bars) as writes to the driver's segment memory.</td><td>The display uses a separate LCD driver chip (HT1621-style)</td><td>Moderate: map memory bits to segments</td></tr>
-      <tr><td><b>3</b> · buttons</td><td>Button presses, and a place to "press" them (Chapter 12 method)</td><td>Always</td><td>Easy</td></tr>
+      <tr><td><b>3</b> · buttons</td><td>Button presses, and a place to "press" them (Chapter 13 method)</td><td>Always</td><td>Easy</td></tr>
     </tbody>
   </table></div>
   <div class="prose">
@@ -1925,7 +1985,7 @@ void button_press(int btn, int ms)
 
 <!-- ============ 13 CASE ============ -->
 <section id="case">
-  <h2><span class="ch">Chapter 13</span>3D-printed case</h2>
+  <h2><span class="ch">Chapter 14</span>3D-printed case</h2>
   <div class="prose">
     <p>A handlebar head unit that holds the touchscreen and the tap board together. It's a single parametric OpenSCAD file, <code>etube_case.scad</code>, that produces four printable parts: <b>bezel</b>, <b>shell</b>, <b>mount</b> and <b>gasket</b>. All the dimensions below are the file's defaults, sized for a typical 2.8-inch SPI touchscreen module. Measure your own screen first and change the numbers at the top of the file. Everything else resizes automatically.</p>
     <p>With this case, the tap board lives on the handlebar instead of in a separate box near the head tube. The pigtail comes in through the cable gland and plugs into JC200 #2 on the Y-cable's 350 mm leg, which sits near the display.</p>
@@ -2190,7 +2250,7 @@ void button_press(int btn, int ms)
 
 <!-- ============ 14 TROUBLE ============ -->
 <section id="trouble">
-  <h2><span class="ch">Chapter 14</span>Troubleshooting</h2>
+  <h2><span class="ch">Chapter 15</span>Troubleshooting</h2>
   <div class="tablewrap"><table>
     <thead><tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr></thead>
     <tbody>
@@ -2201,6 +2261,9 @@ void button_press(int btn, int ms)
       <tr><td>Signal smaller in Stage B than Stage A</td><td>L1 impedance too low at 1 MHz</td><td>Use 1 mH, or add a second 470 µH in series. Check its SRF is above 2 MHz.</td></tr>
       <tr><td>S3 resets when BLE starts</td><td>Supply dips during radio transmit</td><td>Fit C3 (100 µF) right at the 3V3 pin. Check the polyfuse isn't tripping.</td></tr>
       <tr><td>Decoded frames differ each time for the same state</td><td>Missed edges, or a counter or CRC field</td><td>Look at which bits change. A field that counts up steadily is a sequence number, not an error.</td></tr>
+      <tr><td>Bluetooth: EW-EN100 missing from scans</td><td>Shimano Ride (or E-TUBE) is connected to it, maybe in the background, or the bike is off</td><td>Force-quit Shimano Ride, then switch the bike off and on. Diff a bike-off and a bike-on scan to spot it.</td></tr>
+      <tr><td>Bluetooth: dashboard connects once, never again</td><td>Connecting while a scan is running</td><td>Stop the scan before <code>connect()</code>. Fixed in <code>bike_ble.cpp</code>.</td></tr>
+      <tr><td>Serial monitor blank, or upload says "No serial data received"</td><td>Output printed before the monitor opened, or the S3's USB serial locked up</td><td>Reset after opening the monitor. If the upload still fails, unplug and replug the board.</td></tr>
       <tr><td>Hum or noise only with the laptop on its charger</td><td>Ground loop</td><td>Run the laptop on battery, or use the ADuM3160 isolator.</td></tr>
     </tbody>
   </table></div>
@@ -2208,7 +2271,7 @@ void button_press(int btn, int ms)
 
 <!-- ============ 13 GLOSSARY ============ -->
 <section id="glossary">
-  <h2><span class="ch">Chapter 15</span>Glossary</h2>
+  <h2><span class="ch">Chapter 16</span>Glossary</h2>
   <dl class="gloss">
     <dt>E-TUBE</dt><dd>Shimano's wired system for Di2 shifting and STEPS e-bikes. Two wires carry both power and data.</dd>
     <dt>EW-SD50</dt><dd>The E-TUBE cable with the small round plugs used on your bike. The newer EW-SD300 has different plugs and doesn't fit.</dd>
@@ -2234,7 +2297,7 @@ void button_press(int btn, int ms)
 
 <!-- ============ 14 SOURCES ============ -->
 <section id="sources">
-  <h2><span class="ch">Chapter 16</span>Sources</h2>
+  <h2><span class="ch">Chapter 17</span>Sources</h2>
   <ol class="src">
     <li><a href="https://eevblog.com/forum/projects/shimano-di2-modulation/25" target="_blank" rel="noopener">EEVblog forum: Shimano Di2 modulation</a>. Two-wire bus, BPSK, ~1 MHz carrier, ~500 kbit/s.</li>
     <li><a href="https://hackaday.com/tag/groupset/" target="_blank" rel="noopener">Hackaday: reverse engineering Shimano bike electronics</a> (kwakeham's Di2 wireless work).</li>
