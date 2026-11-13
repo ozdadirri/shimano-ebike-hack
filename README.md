@@ -101,7 +101,8 @@ GitHub Pages publishes `main` / `docs`. Edit the `*-guide.html` sources, run `py
 | `tools/test_decode.py` | Simulated frames with timing jitter to check the decoder |
 | `tools/build_docs.py` | Rebuilds `docs/index.html`, `docs/tap.html` and `docs/media.html` from their sources |
 | `tools/export_drawings.py` | Exports every drawing in the wired-tap guide to `hardware/drawings/*.svg` |
-| `hardware/case/etube_case.scad` | Parametric OpenSCAD head-unit case: bezel, shell, handlebar mount, gasket |
+| `hardware/case/etube_case.scad` | Parametric OpenSCAD case: bezel, shell, gasket, Garmin or strap mount (`VARIANT` en100 / tap) |
+| `hardware/case/stl/` | Ready-to-print STLs for the ES3C28P case, with a print sheet |
 | `hardware/drawings/` | Case drawings as standalone SVG (`tools/export_drawings.py` regenerates these and the wired-tap circuit, PCB and wiring drawings from the tap guide) |
 | `hardware/bom.csv` | Parts list with approximate AUD prices |
 
@@ -152,25 +153,19 @@ python3 tools/etube_decode.py /dev/cu.usbmodem1101 eco
 
 ## Case
 
-Install OpenSCAD 2021.01+, open `hardware/case/etube_case.scad`, enter your touchscreen's
-measurements at the top, set `PART` to `bezel`, `shell`, `mount` or `garmin`, and `gasket`,
-render (F6) and export each part as an STL. Print in PETG or ASA, and the gasket in TPU 95A.
+**Ready to print:** [`hardware/case/stl/`](hardware/case/stl) has STLs for the ES3C28P with a 1S LiPo, the board's
+speaker, a power switch and a Garmin quarter-turn mount (68.8 × 104.8 × 28.4 mm). The
+[print sheet](hardware/case/stl/README.md) lists materials, orientation, the screws and other parts, and the assembly steps.
+It's designed from LCDwiki's outline drawing and **not yet test-printed**, so print `garmin_test` and the bezel first.
 
-**Garmin mount:** `garmin` replaces the strap-on bar `mount` with a Garmin quarter-turn tab, so the
-head unit clicks into a Garmin out-front or stem mount. It screws onto the same two inserts. The tab
-sizes are community measurements, so print `garmin_test` (about 10 minutes) first, check the fit
-in your mount, and adjust the `g_*` parameters. `MOUNT = "garmin"` shows it in the assembly view.
+<p align="center"><img src="docs/img/case-en100-assembly.png" alt="Exploded case: bezel with the screen window, TPU gasket, and the shell with battery cradle, speaker grille and USB-C opening" width="60%"></p>
 
-<p align="center"><img src="docs/img/case-garmin.jpg" alt="Back of the case in OpenSCAD with the Garmin-compatible adapter: a plate screwed to the two mount inserts, with the round quarter-turn tab just below the case centre" width="70%"></p>
+**Changing it:** open `hardware/case/etube_case.scad` in OpenSCAD 2021.01+. `VARIANT = "en100"` is this case;
+`"tap"` is the older wired-tap layout. Board, battery, speaker and switch sizes are parameters at the top. Set
+`PART` to `bezel`, `shell`, `gasket`, `garmin`, `garmin_test` or `mount`, render (F6) and export as STL.
 
-<p align="center"><sub><b>Garmin-compatible mount</b>: the adapter plate on the case back, held by the two M3 screws,<br>
-with the quarter-turn tab just below the centre so the unit balances on the mount.</sub></p>
-
-![The case in OpenSCAD 2021.01: exploded assembly with the bezel, TPU gasket, shell and handlebar mount, default size 104.8 × 68.8 × 45 mm](docs/img/case-openscad-assembly.jpg)
-
-<sub>Exploded assembly in OpenSCAD 2021.01 with the default parameters: bezel on top, TPU gasket (yellow), shell
-with the cable-gland hole in its side, and the handlebar mount with its strap slots underneath. The console
-reports 104.8 × 68.8 mm and 45 mm thick.</sub>
+**Garmin mount:** the tab sizes are community measurements, so print `garmin_test` (about 10 minutes) first,
+check the fit in your mount, and adjust the `g_*` parameters.
 
 ## Status
 

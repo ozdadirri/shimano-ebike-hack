@@ -438,7 +438,7 @@ ol.prose li, ul.prose li { margin-bottom: 6px; }
       <tr><td><b>LCDwiki ES3C28P</b></td><td>ESP32-S3 (16 MB flash, 8 MB PSRAM), 2.8" IPS touchscreen, ES8311 audio + speaker, microSD slot</td><td class="num">35–55</td></tr>
       <tr><td>microSD card</td><td>MP3s (FAT32 or exFAT)</td><td class="num">8–12</td></tr>
       <tr><td>Battery</td><td>1S LiPo 1500–2000 mAh if the board has a battery connector, otherwise a slim USB power bank. About 6–10 h</td><td class="num">8–15</td></tr>
-      <tr><td>Case + mount</td><td>Waterproof phone bag to start, then the 3D-printed case with a Garmin quarter-turn tab</td><td class="num">10–25</td></tr>
+      <tr><td>Case + mount</td><td>Waterproof phone bag to start, then the printed case (STLs in the repo), screws, M3 inserts, slide switch</td><td class="num">15–35</td></tr>
       <tr><td>GPS module <span class="muted">(optional)</span></td><td>u-blox M10 (or NEO-6M), 3.3 V, NMEA 9600. Makes the map real</td><td class="num">10–35</td></tr>
       <tr><td>USB-C data cable</td><td>Flashing and the serial log</td><td class="num">—</td></tr>
     </tbody>
@@ -616,7 +616,8 @@ Bike: live data</code></pre>
     <div>
       <h3>Power, case and mount</h3>
       <p><b>Battery:</b> look for a small 2-pin battery connector on the board. If there is one, a 1S LiPo charges through the board's USB-C. <strong>Check the plug polarity first.</strong> Cheap LiPo leads are often wired backwards. Without a connector, use a slim USB power bank. Screen, Bluetooth and Wi-Fi draw roughly 150–300 mA, so 2000 mAh lasts about 6–10 h.</p>
-      <p><b>Case:</b> start with a waterproof phone bag on the handlebar or top tube. The touchscreen works through the clear film. For the final build, adapt the parametric OpenSCAD case (<a href="https://github.com/ozdadirri/shimano-ebike-hack/blob/main/hardware/case/etube_case.scad"><code>etube_case.scad</code></a>, with a Garmin quarter-turn tab) to the ES3C28P's measurements, and print it in PETG or ASA. The <a href="tap.html#case">case chapter</a> has the details.</p>
+      <p><b>Case:</b> to start, a waterproof phone bag on the handlebar works. The touchscreen works through the clear film. For the final build, <b>print the case</b>: <a href="https://github.com/ozdadirri/shimano-ebike-hack/tree/main/hardware/case/stl">ready-made STLs</a> for the ES3C28P, sized from the manufacturer's drawing. It holds a 103450 LiPo, the speaker and a power switch, has a USB-C opening for charging, and clicks into a <b>Garmin quarter-turn mount</b>. 68.8 × 104.8 × 28.4 mm. The <a href="https://github.com/ozdadirri/shimano-ebike-hack/blob/main/hardware/case/stl/README.md">print sheet</a> lists materials (PETG/ASA + a TPU gasket), screws and assembly. No printer? Send the files to a friend, a makerspace, or an online service. It hasn't been test-printed yet, so print the 10-minute Garmin fit test and the bezel first.</p>
+      <figure><img src="img/case-en100-assembly.png" width="1200" height="1000" alt="Exploded case: bezel with the screen window, TPU gasket, and the shell with battery cradle, speaker grille and USB-C opening" style="display:block;width:100%;max-width:520px;height:auto;margin:0 auto"><figcaption><b>The case, exploded.</b> Bezel (the board screws to its four pillars), TPU gasket, and the shell with the battery cradle, speaker grille, switch slot and USB-C opening. Rendered in OpenSCAD from <code>etube_case.scad</code>.</figcaption></figure>
       <ul class="check">
         <li><label><input type="checkbox" data-k="p8a"><span>Runs from battery, mounted where you can read it</span></label></li>
         <li><label><input type="checkbox" data-k="p8b"><span><b>Gate:</b> 30-minute ride, no reboot, BUS OK throughout</span></label></li>
@@ -781,7 +782,7 @@ Bike: live data</code></pre>
       <tr><td>Walk mode, error codes</td><td><span class="pill no">Not found</span></td><td>Capture while holding walk assist. Note any code the bike shows. Never cause faults on purpose.</td></tr>
       <tr><td>Cadence, max/avg speed on screen</td><td><span class="pill hard">Decoded</span></td><td>Already in <code>RideState</code>. Needs room on the Ride screen.</td></tr>
       <tr><td>GPS map + GPX ride log on microSD</td><td><span class="pill hard">Code ready</span></td><td>Fit a GPS module (Phase 9), then write GPX files for Strava.</td></tr>
-      <tr><td>Battery + printed case for the ES3C28P</td><td><span class="pill hard">Planned</span></td><td>Measure the board, adapt <code>etube_case.scad</code>, add a battery bay.</td></tr>
+      <tr><td>Printed case for the ES3C28P</td><td><span class="pill hard">STLs ready</span></td><td>Designed from the manufacturer's drawing. First test print, then fix anything that doesn't fit.</td></tr>
       <tr><td>Wired E-TUBE tap</td><td><span class="pill sig">Research</span></td><td>Listening on the bike's wire instead of Bluetooth. A full design, not built: <a href="tap.html">wired tap guide</a>.</td></tr>
     </tbody>
   </table></div>

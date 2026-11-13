@@ -16,9 +16,10 @@ __pycache__/
 # Decoder capture logs
 *.log
 
-# Exported meshes (regenerate from the .scad)
+# Exported meshes (regenerate from the .scad), except the published print files
 *.stl
 *.3mf
+!hardware/case/stl/*.stl
 
 # Arduino firmware: Wi-Fi credentials and the bike address stay local
 firmware/**/secrets.h
