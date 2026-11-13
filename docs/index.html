@@ -463,27 +463,47 @@ ol.prose li, ul.prose li { margin-bottom: 6px; }
   <div class="progress"><span id="prog-txt">0 of 0 checks done</span><div class="bar"><i id="prog-bar"></i></div></div>
 
   <div class="phase">
-    <div><div class="no">1</div><div class="gate">desk · 30 min</div></div>
+    <div><div class="no">1</div><div class="gate">desk · 30–45 min</div></div>
     <div>
-      <h3>Set up the toolchain</h3>
-      <p>Install Arduino IDE 2 or <code>arduino-cli</code>, the Espressif <b>esp32</b> core 3.3.x, and these libraries:</p>
+      <h3>Set up the Arduino IDE</h3>
+      <p>Everything here works in the free <b>Arduino IDE 2</b>. No command line needed.</p>
+      <ol>
+        <li><b>Install</b> Arduino IDE 2 from <a href="https://www.arduino.cc/en/software">arduino.cc/en/software</a>.</li>
+        <li><b>Add the ESP32 boards:</b> <b>File → Preferences</b> (macOS: <b>Arduino IDE → Settings</b>). Under <i>Additional boards manager URLs</i>, paste:<br><code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code></li>
+        <li><b>Tools → Board → Boards Manager</b>, search <b>esp32</b>, and install <b>esp32 by Espressif Systems</b> (3.3.x).</li>
+        <li><b>Tools → Manage Libraries</b>, and install each of these:</li>
+      </ol>
       <div class="tablewrap"><table>
-        <thead><tr><th>Library</th><th>Tested</th></tr></thead>
+        <thead><tr><th>Search for</th><th>Install</th><th>Tested</th></tr></thead>
         <tbody>
-          <tr><td>NimBLE-Arduino</td><td>2.5.2</td></tr>
-          <tr><td>lvgl</td><td>9.2.2 and 9.6.0 (copy <code>lv_conf.h</code> next to the library: 512 KB pool in PSRAM, Montserrat 14/20/28)</td></tr>
-          <tr><td>GFX Library for Arduino</td><td>1.6.9</td></tr>
-          <tr><td>ESP32-audioI2S</td><td>3.4.7 and 4.0.1</td></tr>
-          <tr><td>TinyGPSPlus</td><td>1.0.3</td></tr>
+          <tr><td>NimBLE-Arduino</td><td><b>NimBLE-Arduino</b> by h2zero</td><td>2.5.2</td></tr>
+          <tr><td>lvgl</td><td><b>lvgl</b> by kisvegabor</td><td>9.2.2, 9.6.0</td></tr>
+          <tr><td>GFX Library for Arduino</td><td><b>GFX Library for Arduino</b> by Moon On Our Nation</td><td>1.6.9</td></tr>
+          <tr><td>ESP32-audioI2S</td><td><b>ESP32-audioI2S-master</b> by schreibfaul1</td><td>3.4.7, 4.0.1</td></tr>
+          <tr><td>TinyGPSPlus</td><td><b>TinyGPSPlus</b> by Mikal Hart</td><td>1.0.3</td></tr>
         </tbody>
       </table></div>
-      <p>Board: <b>ESP32S3 Dev Module</b>, USB CDC On Boot <b>Enabled</b>, Flash 16 MB, PSRAM <b>OPI</b>, Partition Scheme <b>Custom</b> (the sketch's <code>partitions.csv</code>).</p>
-<pre><button class="copy" type="button">Copy</button><code>git clone https://github.com/ozdadirri/shimano-ebike-hack.git
-cd shimano-ebike-hack/firmware/ble_explorer
-arduino-cli compile --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PSRAM=opi .</code></pre>
+      <ol start="5">
+        <li><b>Get the code:</b> on <a href="https://github.com/ozdadirri/shimano-ebike-hack">the GitHub page</a>, click <b>Code → Download ZIP</b> and unzip it (or <code>git clone</code> it).</li>
+        <li><b>Copy <code>firmware/arduino_libraries/lv_conf.h</code></b> into your Arduino <b>libraries</b> folder, next to the <code>lvgl</code> folder. That's <code>Documents/Arduino/libraries/</code> on macOS and Windows. LVGL won't build without it.</li>
+      </ol>
+      <h3>Board settings (Tools menu)</h3>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Board</td><td><b>ESP32S3 Dev Module</b> (under esp32)</td></tr>
+          <tr><td>USB CDC On Boot</td><td><b>Enabled</b>. Otherwise the Serial Monitor stays blank</td></tr>
+          <tr><td>Flash Size</td><td><b>16MB (128Mb)</b></td></tr>
+          <tr><td>PSRAM</td><td><b>OPI PSRAM</b></td></tr>
+          <tr><td>Partition Scheme</td><td><b>Custom</b>. Uses the sketch's own <code>partitions.csv</code>. Required for the dashboard (3.6 MB). The default 3 MB app slot is too small</td></tr>
+          <tr><td>Port</td><td>The board's USB port (<code>/dev/cu.usbmodem…</code> on a Mac, <code>COM…</code> on Windows)</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted">Command line instead? The same settings as an <code>arduino-cli</code> board name:</p>
+<pre><button class="copy" type="button">Copy</button><code>arduino-cli compile --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi firmware/etube_ui</code></pre>
       <ul class="check">
-        <li><label><input type="checkbox" data-k="p1a"><span>esp32 core and the five libraries installed</span></label></li>
-        <li><label><input type="checkbox" data-k="p1b"><span><b>Gate:</b> <code>ble_explorer</code> compiles</span></label></li>
+        <li><label><input type="checkbox" data-k="p1a"><span>esp32 boards, the five libraries and <code>lv_conf.h</code> installed</span></label></li>
+        <li><label><input type="checkbox" data-k="p1b"><span><b>Gate:</b> open <code>firmware/ble_explorer/ble_explorer.ino</code> and click <b>Verify</b> (✓). It compiles</span></label></li>
       </ul>
     </div>
   </div>
@@ -503,9 +523,13 @@ arduino-cli compile --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PSRAM
     <div><div class="no">3</div><div class="gate">bench · 10 min</div></div>
     <div>
       <h3>Find the EN100</h3>
-      <p>Upload <code>ble_explorer</code>, open the serial monitor at <b>115200</b>, <em>then</em> press RST. If you open the monitor after the scan, you miss it. Type <code>s</code> to scan again.</p>
-<pre><button class="copy" type="button">Copy</button><code>arduino-cli upload -p /dev/cu.usbmodem101 --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PSRAM=opi .
-arduino-cli monitor -p /dev/cu.usbmodem101 -c baudrate=115200</code></pre>
+      <ol>
+        <li><b>File → Open</b> → <code>firmware/ble_explorer/ble_explorer.ino</code>. Use the board settings from Phase 1.</li>
+        <li>Plug the board in with a USB-C <b>data</b> cable and pick it under <b>Tools → Port</b>.</li>
+        <li>Click <b>Upload</b> (→). Wait for <i>Hard resetting via RTS pin</i>.</li>
+        <li>Open <b>Tools → Serial Monitor</b> and set it to <b>115200 baud</b>, <b>Newline</b>.</li>
+        <li><em>Then</em> press the board's <b>RST</b> button. The scan prints in the first 10 seconds, so if the monitor wasn't open you miss it. Type <code>s</code> and press Enter to scan again.</li>
+      </ol>
       <p>Scan once with the bike <b>off</b> and once with it <b>on</b>. The device that only appears with the bike on is your EN100. It advertises under the bike's name (set in E-TUBE) with the Shimano service:</p>
 <pre><code>[13] c4:82:cf:xx:xx:xx  RSSI  -70  name='Borghini'   &lt;== Shimano?
        svc 000018ff-5348-494d-414e-4f5f424c4500
@@ -522,7 +546,7 @@ arduino-cli monitor -p /dev/cu.usbmodem101 -c baudrate=115200</code></pre>
     <div><div class="no">4</div><div class="gate">bench · 5 min</div></div>
     <div>
       <h3>Connect and dump the GATT table</h3>
-      <p>Type the EN100's number and press Enter. Pairing is <b>Just Works</b>: no passkey and no Shimano login. The sketch lists every service, reads what it can and subscribes to everything. Within a second the ride data starts:</p>
+      <p>Type the EN100's number into the Serial Monitor's input box and press Enter. Pairing is <b>Just Works</b>: no passkey and no Shimano login. The sketch lists every service, reads what it can and subscribes to everything. Within a second the ride data starts:</p>
 <pre><code>Security: encrypted=1 authenticated=0 bonded=1
 SERVICE 000018ef-5348-494d-414e-4f5f424c4500
   CHAR 00002ac1-5348-494d-414e-4f5f424c4500 h=62 [N]
@@ -562,11 +586,16 @@ python3 tools/en100_capture.py 110 &gt; capture.txt</code></pre>
     <div><div class="no">6</div><div class="gate">bench · 20 min</div></div>
     <div>
       <h3>Flash the dashboard</h3>
-      <p>Copy <code>secrets.example.h</code> to <code>secrets.h</code> (it's git-ignored). Fill in your Wi-Fi and, optionally, <code>BIKE_ADDR</code>, your EN100's address as the explorer printed it, so the dashboard ignores other riders' bikes.</p>
+      <ol>
+        <li>In the <code>firmware/etube_ui</code> folder, copy <code>secrets.example.h</code> to a new file named <b><code>secrets.h</code></b> (it's git-ignored, so your details stay private).</li>
+        <li><b>File → Open</b> → <code>firmware/etube_ui/etube_ui.ino</code>. The IDE opens every file in the folder as a tab. In the <code>secrets.h</code> tab, fill in <code>WIFI_SSID</code>, <code>WIFI_PASS</code> and, optionally, <code>BIKE_ADDR</code>: your EN100's address as the explorer printed it, so the dashboard ignores other riders' bikes.</li>
+        <li>Check <b>Tools → Partition Scheme → Custom</b> (it won't fit otherwise), then click <b>Upload</b>. The first build takes a few minutes, mostly the Chinese font.</li>
+        <li>Open the Serial Monitor at 115200 to watch the log.</li>
+      </ol>
+      <p class="muted">Command line:</p>
 <pre><button class="copy" type="button">Copy</button><code>cd firmware/etube_ui
 cp secrets.example.h secrets.h      # then edit it
-arduino-cli compile --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi .
-arduino-cli upload  --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi -p /dev/cu.usbmodem101 .</code></pre>
+arduino-cli upload --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi -p /dev/cu.usbmodem101 .</code></pre>
       <p>Press RST, then switch the bike off and on. The serial log shows the link:</p>
 <pre><code>Bike: found 'Borghini' (c4:82:cf:xx:xx:xx) RSSI -66
 Bike: connecting...
@@ -737,7 +766,11 @@ Bike: live data</code></pre>
     <tbody>
       <tr><td>EN100 missing from scans</td><td>Shimano Ride is connected (maybe in the background), or the bike is off</td><td>Force-quit Ride, switch the bike off and on. Diff a bike-off and a bike-on scan.</td></tr>
       <tr><td>Connects once, never again</td><td>Connecting while a scan is running. NimBLE refuses</td><td>Stop the scan before <code>connect()</code>. Fixed in <code>bike_ble.cpp</code>.</td></tr>
-      <tr><td>Serial monitor blank after upload</td><td>The scan printed before the monitor opened</td><td>Open the monitor first, then press RST, or type <code>s</code>.</td></tr>
+      <tr><td>“Sketch too big” / “text section exceeds available space”</td><td>Partition Scheme isn't Custom</td><td><b>Tools → Partition Scheme → Custom</b>. The dashboard is 3.6 MB.</td></tr>
+      <tr><td><code>lv_conf.h: No such file</code>, or odd LVGL errors</td><td><code>lv_conf.h</code> not next to the <code>lvgl</code> library</td><td>Copy <code>firmware/arduino_libraries/lv_conf.h</code> into <code>Documents/Arduino/libraries/</code>.</td></tr>
+      <tr><td><code>secrets.h: No such file</code></td><td>The template wasn't copied</td><td>Copy <code>secrets.example.h</code> to <code>secrets.h</code> in the sketch folder.</td></tr>
+      <tr><td>No port in Tools → Port</td><td>Charge-only USB cable, or the board isn't in a mode the computer sees</td><td>Use a data cable. Still nothing: hold <b>BOOT</b>, tap <b>RST</b>, release BOOT, upload, then press RST.</td></tr>
+      <tr><td>Serial monitor blank after upload</td><td>The scan printed before the monitor opened</td><td>Open the monitor first, then press RST, or type <code>s</code>. Also check <b>USB CDC On Boot: Enabled</b>.</td></tr>
       <tr><td>Upload: “No serial data received”, port still listed</td><td>The S3's native USB serial locked up after many fast resets</td><td>Unplug the board and plug it back in.</td></tr>
       <tr><td>Can't open the port</td><td>Arduino IDE's Serial Monitor holds it</td><td>Close the monitor tab.</td></tr>
       <tr><td><code>invalid conversion from 'int' to 'lv_part_t'</code></td><td>LVGL 9.6 is stricter than 9.2</td><td>Use <code>LV_PART_MAIN</code> instead of <code>0</code> (fixed in the repo).</td></tr>

@@ -102,6 +102,7 @@ GitHub Pages publishes `main` / `docs`. Edit the `*-guide.html` sources, run `py
 | `docs/media-guide.html` | Ride Audio add-on source; `docs/media.html` is its standalone version |
 | `docs/img/` | Bike photos (`bike-annotated_en100.png`) and the media screen designs (SVG) |
 | `firmware/etube_ui/` | **Working dashboard** (Arduino, LCDwiki ES3C28P): live EW-EN100 data over BLE, GPS map, heart rate, iPhone music remote, internet radio, MP3 |
+| `firmware/arduino_libraries/lv_conf.h` | LVGL configuration: copy into your Arduino `libraries` folder |
 | `firmware/ble_explorer/` | Arduino sketch: scan, connect to any BLE device, dump its GATT table, hex-log every notification |
 | `docs/en100-ble-protocol.md` | EW-EN100 Bluetooth protocol notes: GATT table, the ride data contract, connecting, debugging lessons |
 | `captures/en100/` | Raw EN100 captures (addresses redacted) |
@@ -118,9 +119,23 @@ GitHub Pages publishes `main` / `docs`. Edit the `*-guide.html` sources, run `py
 
 ## Firmware
 
-**Dashboard (Bluetooth route).** Arduino-ESP32 3.3.x, board *ESP32S3 Dev Module* (USB CDC on boot, 16 MB
-flash, OPI PSRAM, custom partitions). Copy `secrets.example.h` to `secrets.h` first. Details are in
-[`firmware/etube_ui/README.md`](firmware/etube_ui/README.md).
+**Dashboard (Bluetooth route).** Details are in [`firmware/etube_ui/README.md`](firmware/etube_ui/README.md).
+
+**Arduino IDE 2 (easiest):**
+
+1. Add the ESP32 boards: *File → Preferences* (macOS: *Arduino IDE → Settings*) → *Additional boards manager URLs*:
+   `https://espressif.github.io/arduino-esp32/package_esp32_index.json`, then *Tools → Board → Boards Manager* →
+   install **esp32 by Espressif Systems** (3.3.x).
+2. *Tools → Manage Libraries*: install **NimBLE-Arduino** (h2zero), **lvgl** (kisvegabor), **GFX Library for Arduino**
+   (Moon On Our Nation), **ESP32-audioI2S-master** (schreibfaul1) and **TinyGPSPlus** (Mikal Hart).
+3. Copy [`firmware/arduino_libraries/lv_conf.h`](firmware/arduino_libraries/lv_conf.h) into `Documents/Arduino/libraries/`, next to the `lvgl` folder.
+4. In `firmware/etube_ui`, copy `secrets.example.h` to `secrets.h` and fill it in.
+5. *File → Open* `firmware/etube_ui/etube_ui.ino` (or `firmware/ble_explorer/ble_explorer.ino`).
+6. *Tools*: Board **ESP32S3 Dev Module**, USB CDC On Boot **Enabled**, Flash Size **16MB**, PSRAM **OPI PSRAM**,
+   Partition Scheme **Custom** (uses the sketch's `partitions.csv`; the dashboard is 3.6 MB and won't fit otherwise), and your Port.
+7. Click **Upload**, open the *Serial Monitor* at 115200, then press **RST** on the board.
+
+**Command line:**
 
 ```sh
 cd firmware/etube_ui

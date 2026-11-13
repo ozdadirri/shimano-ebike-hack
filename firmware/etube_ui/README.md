@@ -51,21 +51,41 @@ The status bar at the top shows the clock (NTP, Sydney time), Wi-Fi, Bluetooth a
 
 ## Build
 
+### Arduino IDE 2
+
+1. *File → Preferences* → *Additional boards manager URLs*: `https://espressif.github.io/arduino-esp32/package_esp32_index.json`.
+   Then *Tools → Board → Boards Manager* → install **esp32 by Espressif Systems** 3.3.x.
+2. *Tools → Manage Libraries*: **NimBLE-Arduino**, **lvgl**, **GFX Library for Arduino**, **ESP32-audioI2S-master**, **TinyGPSPlus** (versions below).
+3. Copy `../arduino_libraries/lv_conf.h` into `Documents/Arduino/libraries/` (next to the `lvgl` folder).
+4. Copy `secrets.example.h` to `secrets.h` and fill it in.
+5. *File → Open* `etube_ui.ino`. In *Tools*, set:
+
+| Setting | Value |
+|---|---|
+| Board | ESP32S3 Dev Module |
+| USB CDC On Boot | **Enabled** (or the Serial Monitor stays blank) |
+| Flash Size | 16MB (128Mb) |
+| PSRAM | **OPI PSRAM** |
+| Partition Scheme | **Custom** (uses `partitions.csv`, 7 MB app; the sketch is 3.6 MB) |
+
+6. **Upload**, open the Serial Monitor at 115200, and press **RST**.
+
 | | |
 |---|---|
 | Core | Arduino-ESP32 3.3.x |
-| Board | ESP32S3 Dev Module, USB CDC On Boot **Enabled**, Flash 16 MB, PSRAM **OPI**, Partition Scheme **Custom** (uses `partitions.csv`, 7 MB app) |
-| Libraries | LVGL 9.2.2, GFX Library for Arduino 1.6.9, NimBLE-Arduino 2.5.2, TinyGPSPlus 1.0.3, ESP32-audioI2S 3.4.7 |
-| `lv_conf.h` | `~/Documents/Arduino/libraries/lv_conf.h`: 512 KB pool in PSRAM, Montserrat 20/28 |
+| Libraries | NimBLE-Arduino 2.5.2, lvgl 9.2.2 or 9.6.0, GFX Library for Arduino 1.6.9, ESP32-audioI2S 3.4.7 or 4.0.1, TinyGPSPlus 1.0.3 |
+| `lv_conf.h` | `../arduino_libraries/lv_conf.h`: 512 KB pool in PSRAM, Montserrat 14/20/28 |
+
+### Command line
 
 ```sh
 arduino-cli compile --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi .
-arduino-cli upload  --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi -p /dev/cu.usbmodem21201 .
+arduino-cli upload  --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi -p /dev/cu.usbmodem101 .
 ```
 
 Press **RST** after uploading. Copy `secrets.example.h` to `secrets.h` and fill in `WIFI_SSID`, `WIFI_PASS` and, optionally, `BIKE_ADDR` (your EN100's address as the serial log prints it, so the dashboard ignores other riders' bikes). `secrets.h` is git-ignored.
 
-**Library versions:** it was written against LVGL 9.2.2 and also builds with LVGL 9.6.0 and ESP32-audioI2S 4.0.1.
+
 
 ## Serial commands (115200)
 
