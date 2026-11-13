@@ -1,4 +1,4 @@
-<title>DIY E-TUBE Tap</title>
+<title>Wired E-TUBE Tap</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -230,7 +230,8 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
 .sv .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
 
 /* Bike photo with callouts: the photo has a white ground, so its labels keep fixed colours */
-.bikefig svg { background: #ffffff; border-radius: 8px; }
+.bikefig svg, .bikefig img { background: #ffffff; border-radius: 8px; }
+.bikefig img { display: block; width: 100%; height: auto; }
 .sv .bk-t { font-family: var(--body); font-size: 26px; font-weight: 600; fill: #15201c; }
 .sv .bk-bg { fill: #ffffff; fill-opacity: .9; stroke: #c9d3cf; stroke-width: 2; }
 .sv .bk-lead { stroke: #15201c; stroke-width: 3; }
@@ -272,13 +273,15 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
     <li><a href="#glossary">Glossary</a></li>
     <li><a href="#sources">Sources</a></li>
   </ol>
-  <div class="tag" style="margin-top:22px">Add-ons</div>
+  <div class="tag" style="margin-top:22px">More</div>
+  <a class="addon" href="./">Borghini's dashboard (main)</a>
   <a class="addon" href="media.html">Ride Audio: Spotify, radio, MP3</a>
 </nav>
 
 <main>
 <!-- ============ 01 OVERVIEW ============ -->
 <section id="overview" class="hero">
+  <div class="note tip"><span class="h">Research route</span><p>This is the wired E-TUBE tap: a full design that hasn't been built. The working solution reads the bike over Bluetooth from the EW-EN100. See <a href="./">Borghini's dashboard</a>.</p></div>
   <div class="kicker">MERIDA eSPRESSO 400 S EQ · SHIMANO STEPS E6100 · ESP32-S3</div>
   <h1>DIY E-TUBE Tap</h1>
   <p class="lede">A receive-only listener that plugs into your e-bike's E-TUBE wire, decodes what the motor, battery and display say to each other, and shows it on your own touchscreen and over Bluetooth.</p>
@@ -292,31 +295,8 @@ ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
   <p class="disclaimer">* Figures reported by hobbyists who probed Di2/E-TUBE wiring. Confirm them on your own bike in Phase 3. Hobby project, not affiliated with or endorsed by Shimano. Adding third-party parts may affect your warranty.</p>
 
   <figure class="bikefig">
-    <svg class="sv" viewBox="0 270 1500 920" role="img" aria-label="The Merida eSpresso 400 S EQ this project is built for, with the motor at the bottom bracket, the battery in the down tube, the E-TUBE wire running inside the frame to the head tube, and the display and new head unit on the handlebar.">
-      <image href="img/bike.jpg" x="0" y="0" width="1500" height="1500"/>
-      <path d="M770,870 L860,760 L960,560 L1030,450 L1015,345" class="bk-route"/>
-      <line x1="1020" y1="345" x2="1100" y2="318" class="bk-lead"/>
-      <rect x="1100" y="270" width="380" height="76" rx="10" class="bk-bg"/>
-      <text x="1114" y="302" class="bk-t">SC-E5000 display +</text>
-      <text x="1114" y="334" class="bk-t">your touchscreen unit</text>
-      <line x1="1040" y1="440" x2="1100" y2="430" class="bk-lead"/>
-      <rect x="1100" y="392" width="380" height="76" rx="10" class="bk-bg"/>
-      <text x="1114" y="424" class="bk-t">Y-cable + JC200s,</text>
-      <text x="1114" y="456" class="bk-t">near the display</text>
-      <line x1="925" y1="690" x2="870" y2="660" class="bk-lead"/>
-      <rect x="600" y="610" width="270" height="76" rx="10" class="bk-bg"/>
-      <text x="735" y="642" text-anchor="middle" class="bk-t">504 Wh battery</text>
-      <text x="735" y="674" text-anchor="middle" class="bk-t">in the down tube</text>
-      <line x1="770" y1="905" x2="770" y2="1020" class="bk-lead"/>
-      <rect x="600" y="1020" width="340" height="76" rx="10" class="bk-bg"/>
-      <text x="770" y="1052" text-anchor="middle" class="bk-t">DU-E6100 motor:</text>
-      <text x="770" y="1084" text-anchor="middle" class="bk-t">E-TUBE wire starts here</text>
-      <circle cx="770" cy="880" r="16" class="bk-dot"/>
-      <circle cx="925" cy="690" r="16" class="bk-dot"/>
-      <circle cx="1040" cy="440" r="16" class="bk-dot"/>
-      <circle cx="1020" cy="345" r="16" class="bk-dot"/>
-    </svg>
-    <figcaption><b>The bike: Merida eSpresso 400 S EQ.</b> The dashed orange line is roughly where the E-TUBE wire runs inside the frame, from the motor up the down tube to the display on the handlebar. Everything in this guide plugs in at the display end, so nothing inside the frame gets touched.</figcaption>
+    <img src="img/bike-annotated_en100.png" width="1672" height="941" alt="Borghini, a blue Merida eSpresso 400 S EQ. The E-TUBE wire runs from the DU-E6100 motor past the 504 Wh battery in the down tube to the EW-EN100 wireless unit near the head tube, which sends Bluetooth LE to the ESP32-S3 display or an iPhone on the handlebar.">
+    <figcaption><b>The bike: Borghini, a Merida eSpresso 400 S EQ.</b> The dashed orange line is roughly where the E-TUBE wire runs inside the frame, from the motor up the down tube. The working dashboard listens to the EW-EN100 over Bluetooth. The wired tap in this guide would plug into the same wire near the head tube instead.</figcaption>
   </figure>
 
   <a class="addon-card" href="media.html">

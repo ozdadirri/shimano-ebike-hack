@@ -1,0 +1,822 @@
+<title>Borghini's Dashboard</title>
+<meta name="description" content="A DIY ESP32-S3 touchscreen dashboard that reads live Shimano STEPS ride data from the EW-EN100 over Bluetooth LE.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: workshop manual (shared with tap.html and media.html). Sticky chapter rail on the left (desktop), one reading column, wide figures break out to full column width. Orange = signal path, teal = power path, grey = ground. */
+:root {
+  --bg: #eef2f0;
+  --surface: #ffffff;
+  --sunk: #e3e9e6;
+  --fg: #15201c;
+  --muted: #586661;
+  --line: #c9d3cf;
+  --signal: #c2410c;
+  --signal-soft: #fbe3d6;
+  --power: #0f766e;
+  --power-soft: #d3eeeb;
+  --gnd: #7a8783;
+  --good: #2f7d32;
+  --warn: #a15c07;
+  --bad: #b42318;
+  --good-soft: #dcefdc;
+  --warn-soft: #f6e8cf;
+  --bad-soft: #f7dcd8;
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1412; --surface: #161e1b; --sunk: #1d2724; --fg: #e4ebe8; --muted: #9aa9a3; --line: #2d3a35;
+    --signal: #ff8b52; --signal-soft: #3a2116; --power: #3cc5ba; --power-soft: #12302d; --gnd: #7f8d88;
+    --good: #6cc070; --warn: #e3a54a; --bad: #f07a6c; --good-soft: #1b2e1c; --warn-soft: #33270f; --bad-soft: #3a1c18;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1412; --surface: #161e1b; --sunk: #1d2724; --fg: #e4ebe8; --muted: #9aa9a3; --line: #2d3a35;
+  --signal: #ff8b52; --signal-soft: #3a2116; --power: #3cc5ba; --power-soft: #12302d; --gnd: #7f8d88;
+  --good: #6cc070; --warn: #e3a54a; --bad: #f07a6c; --good-soft: #1b2e1c; --warn-soft: #33270f; --bad-soft: #3a1c18;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+.shell { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 48px; }
+@media (max-width: 900px) { .shell { grid-template-columns: minmax(0, 1fr); gap: 0; } nav.rail { display: none; } }
+
+nav.rail { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; padding-top: 40px; max-height: 100vh; overflow-y: auto; }
+nav.rail .tag { font-family: var(--display); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+nav.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: ch; }
+nav.rail li { counter-increment: ch; }
+nav.rail a { display: grid; grid-template-columns: 26px 1fr; padding: 4px 8px; border-radius: 6px; color: var(--fg); text-decoration: none; font-size: 14px; }
+nav.rail a::before { content: counter(ch, decimal-leading-zero); font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 3px; }
+nav.rail a:hover, nav.rail a:focus-visible { background: var(--sunk); outline: none; }
+nav.rail a.addon { grid-template-columns: 26px 1fr; color: var(--signal); font-weight: 600; }
+nav.rail a.addon::before { content: "+"; font-size: 13px; padding-top: 1px; color: var(--signal); }
+.addon-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin: 18px 0; text-decoration: none; color: var(--fg); }
+.addon-card:hover, .addon-card:focus-visible { border-color: var(--signal); outline: none; }
+.addon-card img { width: 100%; height: auto; display: block; }
+.addon-card .k { font-family: var(--mono); font-size: 12px; color: var(--signal); letter-spacing: .05em; }
+.addon-card .t { font-family: var(--display); font-weight: 700; font-size: 28px; text-transform: uppercase; line-height: 1.1; margin: 4px 0 8px; }
+.addon-card .go { font-family: var(--display); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--signal); }
+@media (max-width: 560px) { .addon-card { grid-template-columns: minmax(0, 1fr); } }
+
+main { min-width: 0; padding-top: 40px; }
+section { padding-block: 28px; border-top: 1px solid var(--line); }
+section:first-of-type { border-top: 0; }
+.prose { max-width: 68ch; }
+
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.1; margin: 0; }
+h1 { font-size: clamp(44px, 7vw, 76px); font-weight: 700; letter-spacing: -.01em; text-transform: uppercase; }
+h2 { font-size: clamp(30px, 4vw, 40px); font-weight: 700; text-transform: uppercase; letter-spacing: .01em; margin-bottom: 14px; }
+h2 .ch { font-family: var(--mono); font-size: 14px; font-weight: 400; color: var(--muted); display: block; letter-spacing: .04em; margin-bottom: 6px; text-transform: none; }
+h3 { font-size: 23px; font-weight: 600; margin: 26px 0 8px; letter-spacing: .01em; }
+p { margin: 0 0 14px; }
+a { color: var(--power); }
+code, kbd { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+strong { font-weight: 700; }
+.muted { color: var(--muted); }
+
+.hero { padding-bottom: 24px; }
+.hero .kicker { font-family: var(--mono); font-size: 13px; color: var(--signal); letter-spacing: .05em; margin-bottom: 10px; }
+.hero .lede { font-size: 19px; max-width: 60ch; margin-top: 16px; color: var(--fg); }
+.hero .disclaimer { font-size: 13px; color: var(--muted); margin-top: 10px; }
+.specline { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 22px; font-family: var(--mono); font-size: 13px; }
+.specline div { display: grid; }
+.specline span:first-child { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+
+figure { margin: 22px 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+figure .scroll { overflow-x: auto; }
+figure svg { display: block; width: 100%; height: auto; }
+figure svg.wide { min-width: 720px; }
+figcaption { font-size: 14px; color: var(--muted); margin-top: 12px; max-width: 75ch; }
+figcaption b { color: var(--fg); }
+
+/* SVG roles */
+.sv text { font-family: var(--body); font-size: 13px; fill: currentColor; }
+.sv .t-sm { font-size: 11.5px; fill: var(--muted); }
+.sv .t-mono { font-family: var(--mono); font-size: 11.5px; }
+.sv .t-b { font-weight: 700; }
+.sv .t-sig { fill: var(--signal); }
+.sv .t-pwr { fill: var(--power); }
+.sv .box { fill: var(--surface); stroke: currentColor; stroke-width: 1.4; }
+.sv .box-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1.2; }
+.sv .box-sig { fill: var(--signal-soft); stroke: var(--signal); stroke-width: 1.4; }
+.sv .box-pwr { fill: var(--power-soft); stroke: var(--power); stroke-width: 1.4; }
+.sv .board { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+.sv .w { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.sv .w-sig { fill: none; stroke: var(--signal); stroke-width: 2.2; }
+.sv .w-pwr { fill: none; stroke: var(--power); stroke-width: 2.2; }
+.sv .w-gnd { fill: none; stroke: var(--gnd); stroke-width: 1.8; }
+.sv .w-cable { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+.sv .w-dash { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+.sv .dot { fill: currentColor; }
+.sv .dot-sig { fill: var(--signal); }
+.sv .dot-pwr { fill: var(--power); }
+.sv .fill-fg { fill: currentColor; }
+.sv .fill-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.6; }
+.sv .hl { fill: var(--signal-soft); }
+.sv .grid { stroke: var(--line); stroke-width: 1; }
+
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+.tablewrap { overflow-x: auto; margin: 14px 0 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; background: var(--sunk); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+td .pn { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+tfoot td { font-weight: 700; background: var(--sunk); }
+
+.pill { display: inline-block; font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; padding: 1px 9px; border-radius: 999px; white-space: nowrap; }
+.pill.yes { background: var(--good-soft); color: var(--good); }
+.pill.hard { background: var(--warn-soft); color: var(--warn); }
+.pill.no { background: var(--bad-soft); color: var(--bad); }
+.pill.sig { background: var(--signal-soft); color: var(--signal); }
+.pill.pwr { background: var(--power-soft); color: var(--power); }
+
+.note { border-left: 4px solid var(--warn); background: var(--warn-soft); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; max-width: 75ch; }
+.note.stop { border-color: var(--bad); background: var(--bad-soft); }
+.note.tip { border-color: var(--power); background: var(--power-soft); }
+.note p:last-child { margin-bottom: 0; }
+.note .h { font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 14px; display: block; margin-bottom: 4px; }
+
+.calc { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 16px 0; }
+.calc > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; min-width: 0; }
+.calc .k { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; font-size: 14px; color: var(--muted); }
+.calc .v { font-family: var(--mono); font-size: 22px; font-weight: 600; margin: 4px 0; font-variant-numeric: tabular-nums; }
+.calc .f { font-family: var(--mono); font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.calc p { font-size: 14px; margin: 6px 0 0; }
+
+pre { position: relative; background: var(--sunk); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.55; margin: 12px 0 18px; }
+pre code { background: none; padding: 0; font-size: inherit; }
+pre .c { color: var(--muted); }
+.copy { position: absolute; top: 8px; right: 8px; font-family: var(--body); font-size: 12px; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.copy:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* Build phases */
+.phase { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 18px; padding: 22px 0; border-top: 1px dashed var(--line); }
+.phase:first-of-type { border-top: 0; }
+.phase .no { font-family: var(--display); font-weight: 700; font-size: 46px; line-height: 1; color: var(--signal); }
+.phase .gate { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; }
+.phase h3 { margin-top: 0; }
+@media (max-width: 560px) { .phase { grid-template-columns: minmax(0, 1fr); gap: 4px; } .phase .no { font-size: 34px; } }
+ul.check { list-style: none; padding: 0; margin: 10px 0; display: grid; gap: 6px; }
+ul.check label { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; cursor: pointer; }
+ul.check input { margin-top: 5px; accent-color: var(--power); width: 16px; height: 16px; }
+ul.check input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+.progress { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 8px 0 4px; }
+.bar { flex: 1 1 200px; height: 8px; background: var(--sunk); border-radius: 99px; overflow: hidden; border: 1px solid var(--line); }
+.bar i { display: block; height: 100%; width: 0; background: var(--power); transition: width .3s; }
+
+/* Interactive demo */
+.demo-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 12px; }
+.demo-controls label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.demo-controls input[type=text] { font-family: var(--mono); font-size: 15px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); width: 15em; max-width: 100%; letter-spacing: .1em; }
+button.btn { font-family: var(--display); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; font-size: 14px; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--fg); background: var(--fg); color: var(--bg); cursor: pointer; }
+button.btn.ghost { background: transparent; color: var(--fg); }
+.readout { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; overflow-wrap: anywhere; }
+.readout b { color: var(--signal); font-weight: 600; }
+.err { color: var(--bad); font-size: 13px; min-height: 1.2em; }
+
+/* Touchscreen mock */
+.lcd-wrap { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; }
+.lcd { width: 340px; max-width: 100%; aspect-ratio: 4 / 3; background: #0b0f0e; color: #e8f1ee; border-radius: 14px; border: 10px solid #232a28; padding: 14px 16px; display: grid; grid-template-rows: auto 1fr auto auto; gap: 8px; font-family: var(--display); }
+.lcd .top { display: flex; justify-content: space-between; font-size: 13px; letter-spacing: .06em; color: #93a39e; font-family: var(--mono); }
+.lcd .top .ok { color: #6cd07a; }
+.lcd .speed { display: flex; align-items: baseline; gap: 6px; }
+.lcd .speed b { font-size: 76px; font-weight: 700; line-height: .9; font-variant-numeric: tabular-nums; }
+.lcd .speed span { font-size: 18px; color: #93a39e; }
+.lcd .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.lcd .modes div { text-align: center; font-weight: 600; letter-spacing: .08em; font-size: 15px; padding: 3px 0; border-radius: 6px; border: 1px solid #34403c; color: #93a39e; }
+.lcd .modes div.on { background: #ff8b52; color: #1a0d06; border-color: #ff8b52; }
+.lcd .stats { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 8px; font-size: 13px; color: #93a39e; font-family: var(--mono); }
+.lcd .stats b { display: block; color: #e8f1ee; font-family: var(--display); font-size: 20px; }
+.lcd .batt { height: 8px; border-radius: 4px; background: #232a28; overflow: hidden; margin-top: 3px; }
+.lcd .batt i { display: block; height: 100%; width: 72%; background: #3cc5ba; }
+.lcd-notes { flex: 1 1 260px; min-width: 0; font-size: 15px; }
+.lcd-notes ul { padding-left: 18px; margin: 6px 0; }
+
+dl.gloss { display: grid; grid-template-columns: minmax(120px, 190px) minmax(0, 1fr); gap: 8px 20px; margin: 0; }
+dl.gloss dt { font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: .02em; }
+dl.gloss dd { margin: 0; }
+@media (max-width: 560px) { dl.gloss { grid-template-columns: minmax(0, 1fr); } dl.gloss dd { margin-bottom: 8px; } }
+ol.src { padding-left: 20px; font-size: 14px; }
+ol.src li { margin-bottom: 4px; overflow-wrap: anywhere; }
+
+/* PCB drawings: a physical board, so it keeps one fixed palette (solder mask, copper, silkscreen) in both themes */
+.sv .pcb-board { fill: #163d27; stroke: #0a2114; stroke-width: 2; }
+.sv .pcb-dot { fill: #1f5636; }
+.sv .pcb-hole { fill: var(--surface); stroke: #d8b25a; stroke-width: 3; }
+.sv .pcb-slot { fill: var(--surface); stroke: #d8b25a; stroke-width: 1.5; }
+.sv .pcb-pad { fill: #d8b25a; }
+.sv .pcb-via { fill: #d8b25a; stroke: #163d27; stroke-width: 1.5; }
+.sv .pcb-silk { fill: none; stroke: #eef3ec; stroke-width: 1.2; }
+.sv .pcb-silkd { fill: none; stroke: #eef3ec; stroke-width: 1.2; stroke-dasharray: 5 4; }
+.sv .pcb-silkt { fill: #eef3ec; font-family: var(--mono); font-size: 10px; }
+.sv .pcb-tp { fill: none; stroke: #4fd6c8; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.sv .pcb-ts { fill: none; stroke: #ff9e62; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.sv .pcb-tg { fill: none; stroke: #d8b25a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sv .pcb-tb { fill: none; stroke: #9fb8ff; stroke-width: 4; stroke-dasharray: 7 5; stroke-linecap: round; }
+.sv .pcb-zone-p { fill: none; stroke: #4fd6c8; stroke-width: 1; stroke-dasharray: 4 4; }
+.sv .pcb-zone-s { fill: none; stroke: #ff9e62; stroke-width: 1; stroke-dasharray: 4 4; }
+.sv .pcb-ring { fill: none; stroke: #ff9e62; stroke-width: 2.5; }
+
+/* Bike photo with callouts: the photo has a white ground, so its labels keep fixed colours */
+.bikefig svg, .bikefig img { background: #ffffff; border-radius: 8px; }
+.bikefig img { display: block; width: 100%; height: auto; }
+.sv .bk-t { font-family: var(--body); font-size: 26px; font-weight: 600; fill: #15201c; }
+.sv .bk-bg { fill: #ffffff; fill-opacity: .9; stroke: #c9d3cf; stroke-width: 2; }
+.sv .bk-lead { stroke: #15201c; stroke-width: 3; }
+.sv .bk-route { fill: none; stroke: #c2410c; stroke-width: 7; stroke-dasharray: 18 12; stroke-linecap: round; stroke-linejoin: round; }
+.sv .bk-dot { fill: #c2410c; stroke: #ffffff; stroke-width: 5; }
+
+/* Phone web dashboard mock */
+.phone { width: 236px; max-width: 100%; border: 9px solid #232a28; border-radius: 30px; background: #0b0f0e; color: #e8f1ee; padding: 18px 14px; display: grid; gap: 10px; font-family: var(--display); }
+.phone .bar { font-family: var(--mono); font-size: 11px; color: #93a39e; display: flex; justify-content: space-between; }
+.phone .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.phone .tiles div { background: #161e1b; border-radius: 10px; padding: 8px; font-size: 12px; color: #93a39e; font-family: var(--mono); }
+.phone .tiles b { display: block; color: #e8f1ee; font-family: var(--display); font-size: 24px; }
+.phone .ctl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.phone .ctl span { text-align: center; border: 1px solid #34403c; border-radius: 8px; padding: 6px 0; font-size: 13px; letter-spacing: .06em; color: #e8f1ee; }
+.phone .lock { font-family: var(--mono); font-size: 11px; color: #e3a54a; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---- Borghini dashboard page additions ---- */
+.ok-t { color: var(--good); font-weight: 600; }
+.hero-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 36px; align-items: start; margin-top: 28px; }
+@media (max-width: 680px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } .lcdp { margin: 0 auto; } }
+.hero-side p { max-width: 60ch; }
+
+/* Portrait 240x320 mock of the real Ride screen: a physical LCD, so it keeps its own dark palette in both themes */
+.lcdp { width: 300px; max-width: 100%; aspect-ratio: 240 / 320; box-sizing: border-box !important; background: #0b0f0e; color: #e8f1ee; border: 10px solid #232a28; border-radius: 16px;
+  display: grid; grid-template-rows: auto auto auto auto auto 1fr auto; gap: 7px; padding: 10px 10px 0; font-family: var(--display); }
+.lcdp .st { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: #93a39e; letter-spacing: .04em; }
+.lcdp .ok { color: #6cd07a; }
+.lcdp .spd { display: flex; justify-content: flex-end; align-items: baseline; gap: 6px; padding-right: 4px; }
+.lcdp .spd b { font-size: 70px; font-weight: 700; line-height: .9; font-variant-numeric: tabular-nums; }
+.lcdp .spd span { font-size: 16px; color: #93a39e; }
+.lcdp .row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: #93a39e; }
+.lcdp .row .lt { color: #ffc24c; }
+.lcdp .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.lcdp .modes div { text-align: center; font-weight: 600; font-size: 13px; letter-spacing: .06em; padding: 7px 0; border-radius: 6px; border: 1px solid #34403c; color: #93a39e; }
+.lcdp .modes div.on { background: #ff8b52; border-color: #ff8b52; color: #1a0d06; }
+.lcdp .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; font-family: var(--mono); font-size: 10px; color: #93a39e; }
+.lcdp .stats b { display: block; font-family: var(--display); font-size: 19px; color: #e8f1ee; }
+.lcdp .stats b.hr { color: #3cc5ba; }
+.lcdp .batt { height: 5px; border-radius: 3px; background: #232a28; overflow: hidden; margin-top: 2px; width: 80%; }
+.lcdp .batt i { display: block; height: 100%; background: #3cc5ba; }
+.lcdp .mini { align-self: start; display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center; background: #161e1b; border-radius: 8px; padding: 6px; }
+.lcdp .mini i { font-style: normal; background: #2c3a35; border-radius: 5px; height: 30px; display: grid; place-items: center; color: #93a39e; }
+.lcdp .mini b { display: block; font-size: 13px; }
+.lcdp .mini span { font-family: var(--body); font-size: 10px; color: #93a39e; }
+.lcdp .mini em { font-style: normal; color: #ff8b52; padding-right: 6px; }
+.lcdp .tabs { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid #232a28; margin: 0 -10px; }
+.lcdp .tabs span { text-align: center; font-size: 11px; font-weight: 600; letter-spacing: .04em; color: #93a39e; padding: 8px 0 9px; }
+.lcdp .tabs span.on { color: #ff8b52; box-shadow: inset 0 3px 0 #ff8b52; }
+
+/* Feature cards */
+.feat { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.feat > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.feat h3 { margin: 8px 0 6px; font-size: 21px; }
+.feat p { font-size: 14.5px; margin: 0; }
+ol.prose, ul.prose { padding-left: 22px; }
+ol.prose li, ul.prose li { margin-bottom: 6px; }
+</style>
+<div class="shell">
+<nav class="rail" aria-label="Chapters">
+  <div class="tag">Build guide</div>
+  <ol>
+    <li><a href="#overview">What you're building</a></li>
+    <li><a href="#features">What it does</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#bom">Parts</a></li>
+    <li><a href="#build">Build, step by step</a></li>
+    <li><a href="#contract">The Shimano data</a></li>
+    <li><a href="#dashboard">The dashboard</a></li>
+    <li><a href="#phone">Phone + dashboard</a></li>
+    <li><a href="#trouble">Troubleshooting</a></li>
+    <li><a href="#roadmap">What's next</a></li>
+    <li><a href="#safety">Safety</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ol>
+  <div class="tag" style="margin-top:22px">More</div>
+  <a class="addon" href="media.html">Ride Audio add-on</a>
+  <a class="addon" href="tap.html">Wired E-TUBE tap (research)</a>
+  <a class="addon" href="https://github.com/ozdadirri/shimano-ebike-hack/blob/main/docs/en100-ble-protocol.md">Protocol notes</a>
+</nav>
+
+<main>
+
+<!-- ============ 01 OVERVIEW ============ -->
+<section id="overview" class="hero">
+  <div class="kicker">BORGHINI · MERIDA eSPRESSO 400 S EQ · SHIMANO STEPS E6100 · EW-EN100 · ESP32-S3</div>
+  <h1>Borghini's dashboard</h1>
+  <p class="lede">A handlebar touchscreen that reads live ride data from a Shimano STEPS e-bike over Bluetooth, with no wires to the bike. It also does a GPS track, heart rate, an iPhone music remote, internet radio and MP3s.</p>
+  <div class="specline">
+    <div><span>Link</span><span>Bluetooth LE, read-only</span></div>
+    <div><span>Bike side</span><span>Shimano EW-EN100</span></div>
+    <div><span>Screen</span><span>2.8" 240×320 touch</span></div>
+    <div><span>Brain</span><span>ESP32-S3 (ES3C28P)</span></div>
+    <div><span>Status</span><span class="ok-t">Working · 13 Nov 2026</span></div>
+  </div>
+
+  <figure class="bikefig">
+    <img src="img/bike-annotated_en100.png" width="1672" height="941" alt="Borghini, a blue Merida eSpresso 400 S EQ. The E-TUBE wire runs from the DU-E6100 motor past the 504 Wh battery in the down tube to the EW-EN100 wireless unit near the head tube, which sends Bluetooth LE to the ESP32-S3 display or an iPhone on the handlebar.">
+    <figcaption><b>Borghini.</b> The EW-EN100 sits on the E-TUBE wire near the head tube and sends the ride data over Bluetooth LE to the ESP32-S3 display on the handlebar. Nothing inside the frame is touched.</figcaption>
+  </figure>
+
+  <div class="hero-grid">
+    <div class="lcdp" role="img" aria-label="The Ride screen with live bike data: BUS OK, 23.4 km/h, NORMAL assist, light on, battery 100 percent, range 95 km, heart rate 128.">
+      <div class="st"><span class="ok">BUS OK</span><span>BLE ● 14:32</span></div>
+      <div class="spd"><b>23.4</b><span>km/h</span></div>
+      <div class="row"><span>TRIP 12.6 km</span><span class="lt">LIGHT ON</span></div>
+      <div class="modes"><div>ECO</div><div class="on">NORMAL</div><div>HIGH</div></div>
+      <div class="stats">
+        <div>BATTERY<b>100 %</b><div class="batt"><i style="width:100%"></i></div></div>
+        <div>RANGE<b>95 km</b></div>
+        <div>HEART<b class="hr">128</b></div>
+      </div>
+      <div class="mini"><i>♪</i><div><b>Sample Song</b><span>Sample Artist · Spotify</span></div><em>▶</em></div>
+      <div class="tabs"><span class="on">RIDE</span><span>MAP</span><span>MUSIC</span><span>RADIO</span><span>MP3</span></div>
+    </div>
+    <div class="hero-side">
+      <p><b>Why Bluetooth?</b> Shimano's EW-EN100 wireless unit already sends the bike's live data over Bluetooth LE: speed, assist mode, battery, range, trip and lights. We decoded it, so the dashboard just listens. There's no cable to splice, no custom circuit board, and nothing to break on the bike.</p>
+      <p><b>Built for Borghini,</b> a blue Merida eSpresso 400 S EQ. It's named after Lamborghini, because blue is 蓝 <i>lán</i> (<i>lam</i> in Cantonese).</p>
+      <div class="note tip"><span class="h">Read-only by design</span><p>The ESP32 only subscribes to notifications. It never writes to the bike, so it can't change assist, settings, firmware or the 25 km/h limit. If it crashes, the bike rides exactly as normal.</p></div>
+    </div>
+  </div>
+  <p class="disclaimer">Hobby project, not affiliated with or endorsed by Shimano. The protocol notes come from captures of one bike (EN100 firmware 4.6.0.0). Other units and firmware may differ.</p>
+</section>
+
+<!-- ============ 02 FEATURES ============ -->
+<section id="features">
+  <h2><span class="ch">Chapter 02</span>What it does</h2>
+  <div class="feat">
+    <div><span class="pill yes">Live</span><h3>Ride data</h3><p>Speed, assist mode (OFF / ECO / NORMAL / HIGH), battery, range for the current mode, trip and lights, from the EW-EN100. Cadence and max/average speed are decoded too.</p></div>
+    <div><span class="pill yes">Live</span><h3>Heart rate</h3><p>From any Bluetooth heart-rate sender: a chest strap, a watch broadcasting HR, or an Apple Watch through the HeartCast app.</p></div>
+    <div><span class="pill yes">Live</span><h3>iPhone music remote</h3><p>Pairs as <b>E-TUBE Tap</b>. Shows what's playing in Spotify or Music and controls play, skip and volume (Apple Media Service).</p></div>
+    <div><span class="pill yes">Live</span><h3>Internet radio</h3><p>Nine built-in stations over Wi-Fi (Hong Kong, Beijing, Singapore, Australia, UK), through the board's speaker, with a volume boost.</p></div>
+    <div><span class="pill yes">Live</span><h3>MP3 player</h3><p>Every <code>.mp3</code> on the microSD card, with shuffle and repeat.</p></div>
+    <div><span class="pill hard">Needs GPS</span><h3>Map trail</h3><p>Draws the line you've ridden, with a scale bar. The code is ready. It runs a simulated route until a GPS module is fitted (Phase 9).</p></div>
+  </div>
+</section>
+
+<!-- ============ 03 HOW ============ -->
+<section id="how">
+  <h2><span class="ch">Chapter 03</span>How it works</h2>
+  <p class="prose">The ESP32-S3 plays two Bluetooth roles at once. As a <b>central</b>, it connects out to the bike and to a heart-rate sender. As a <b>peripheral</b>, it lets your iPhone connect in for music. One shared scan finds both the bike and the heart-rate sender.</p>
+  <figure>
+<div class="scroll"><svg class="sv wide" viewBox="0 0 780 330" role="img" aria-label="System diagram: the EW-EN100, a heart-rate sender and an optional GPS module feed the ESP32-S3 dashboard. The iPhone connects to the dashboard for music. Wi-Fi brings internet radio and the clock; the microSD card and speaker play MP3s.">
+<text x="110" y="22" text-anchor="middle" class="t-sm">INPUTS</text>
+<text x="390" y="22" text-anchor="middle" class="t-sm">DASHBOARD</text>
+<text x="670" y="22" text-anchor="middle" class="t-sm">MEDIA + PHONE</text>
+<rect x="20" y="36" width="180" height="70" rx="10" class="box-sig"/>
+<text x="110" y="64" text-anchor="middle" class="t-b">EW-EN100</text>
+<text x="110" y="82" text-anchor="middle" class="t-sm">Shimano STEPS, on the bike</text>
+<text x="110" y="97" text-anchor="middle" class="t-sm">“Borghini”</text>
+<rect x="20" y="132" width="180" height="62" rx="10" class="box"/>
+<text x="110" y="158" text-anchor="middle" class="t-b">Heart-rate sender</text>
+<text x="110" y="176" text-anchor="middle" class="t-sm">strap · watch · HeartCast</text>
+<rect x="20" y="220" width="180" height="62" rx="10" class="box-sunk"/>
+<text x="110" y="246" text-anchor="middle" class="t-b">GPS module</text>
+<text x="110" y="264" text-anchor="middle" class="t-sm">optional · NMEA 9600</text>
+<rect x="290" y="46" width="200" height="236" rx="12" class="box-pwr"/>
+<text x="390" y="74" text-anchor="middle" class="t-b">ESP32-S3 · ES3C28P</text>
+<text x="390" y="92" text-anchor="middle" class="t-sm">2.8" touch · speaker · microSD</text>
+<line x1="306" y1="104" x2="474" y2="104" class="grid"/>
+<text x="306" y="126" class="t-mono">bike_ble.cpp</text><text x="306" y="141" class="t-sm">decode → RideState</text>
+<text x="306" y="164" class="t-mono">hr_ble.cpp</text><text x="306" y="179" class="t-sm">shared scan, heart rate</text>
+<text x="306" y="202" class="t-mono">iphone.cpp</text><text x="306" y="217" class="t-sm">music remote, bike data out</text>
+<text x="306" y="240" class="t-mono">ui.cpp · LVGL 9</text><text x="306" y="255" class="t-sm">5 screens, 10 updates/s</text>
+<rect x="580" y="36" width="180" height="70" rx="10" class="box"/>
+<text x="670" y="64" text-anchor="middle" class="t-b">iPhone</text>
+<text x="670" y="82" text-anchor="middle" class="t-sm">pairs as “E-TUBE Tap”</text>
+<text x="670" y="97" text-anchor="middle" class="t-sm">music remote + bike data</text>
+<rect x="580" y="132" width="180" height="62" rx="10" class="box"/>
+<text x="670" y="158" text-anchor="middle" class="t-b">Wi-Fi</text>
+<text x="670" y="176" text-anchor="middle" class="t-sm">internet radio · NTP clock</text>
+<rect x="580" y="220" width="180" height="62" rx="10" class="box"/>
+<text x="670" y="246" text-anchor="middle" class="t-b">microSD + speaker</text>
+<text x="670" y="264" text-anchor="middle" class="t-sm">MP3s · button clicks</text>
+<line x1="200" y1="71" x2="290" y2="100" class="w-sig"/><circle cx="290" cy="100" r="4" class="dot-sig"/>
+<text x="245" y="70" text-anchor="middle" class="t-sm t-sig">BLE</text>
+<line x1="200" y1="163" x2="290" y2="163" class="w"/><circle cx="290" cy="163" r="4" class="dot"/>
+<text x="245" y="156" text-anchor="middle" class="t-sm">BLE</text>
+<line x1="200" y1="251" x2="290" y2="230" class="w-dash"/>
+<text x="245" y="258" text-anchor="middle" class="t-sm">UART</text>
+<line x1="490" y1="100" x2="580" y2="71" class="w-sig"/><circle cx="490" cy="100" r="4" class="dot-sig"/>
+<text x="535" y="70" text-anchor="middle" class="t-sm t-sig">BLE</text>
+<line x1="490" y1="163" x2="580" y2="163" class="w"/>
+<line x1="490" y1="230" x2="580" y2="251" class="w"/>
+<text x="390" y="312" text-anchor="middle" class="t-sm">Orange = Bluetooth links the dashboard depends on. The EN100 accepts one connection at a time.</text>
+</svg></div>
+    <figcaption><b>The pieces.</b> The bike is the only part you don't build. The EW-EN100 already sends the data. Everything else is one ESP32-S3 board and its firmware.</figcaption>
+  </figure>
+  <div class="prose">
+    <h3>The one rule: the EN100 talks to one device at a time</h3>
+    <p>When <b>Shimano Ride</b> on your phone is connected to the EN100, the EN100 stops advertising and the dashboard can't see it. Ride reconnects quietly in the background, so <strong>force-quit Shimano Ride when you ride with the dashboard</strong>. The iPhone's own link to the dashboard (for music) is separate and stays connected.</p>
+  </div>
+</section>
+
+<!-- ============ 04 BOM ============ -->
+<section id="bom">
+  <h2><span class="ch">Chapter 04</span>Parts</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Part</th><th>What for</th><th class="num">Approx. AUD</th></tr></thead>
+    <tbody>
+      <tr><td><b>Shimano EW-EN100</b></td><td>The bike's Bluetooth unit. Many STEPS bikes already have one. It takes the display's place, so a bike can't have both an EN100 and an SC display</td><td class="num">~78</td></tr>
+      <tr><td><b>LCDwiki ES3C28P</b></td><td>ESP32-S3 (16 MB flash, 8 MB PSRAM), 2.8" IPS touchscreen, ES8311 audio + speaker, microSD slot</td><td class="num">35–55</td></tr>
+      <tr><td>microSD card</td><td>MP3s (FAT32 or exFAT)</td><td class="num">8–12</td></tr>
+      <tr><td>Battery</td><td>1S LiPo 1500–2000 mAh if the board has a battery connector, otherwise a slim USB power bank. About 6–10 h</td><td class="num">8–15</td></tr>
+      <tr><td>Case + mount</td><td>Waterproof phone bag to start, then the 3D-printed case with a Garmin quarter-turn tab</td><td class="num">10–25</td></tr>
+      <tr><td>GPS module <span class="muted">(optional)</span></td><td>u-blox M10 (or NEO-6M), 3.3 V, NMEA 9600. Makes the map real</td><td class="num">10–35</td></tr>
+      <tr><td>USB-C data cable</td><td>Flashing and the serial log</td><td class="num">—</td></tr>
+    </tbody>
+    <tfoot><tr><td>Total without the EN100</td><td></td><td class="num">~60–140</td></tr></tfoot>
+  </table></div>
+  <p class="prose muted">Prices are rough and change often. Check current listings. The EN100 price is what we paid.</p>
+</section>
+
+<!-- ============ 05 BUILD ============ -->
+<section id="build">
+  <h2><span class="ch">Chapter 05</span>Build, step by step</h2>
+  <p class="prose">Each phase ends with a <b>gate</b>, a check that must pass before you move on. Tick the boxes as you go. Your progress stays in this browser.</p>
+  <div class="progress"><span id="prog-txt">0 of 0 checks done</span><div class="bar"><i id="prog-bar"></i></div></div>
+
+  <div class="phase">
+    <div><div class="no">1</div><div class="gate">desk · 30 min</div></div>
+    <div>
+      <h3>Set up the toolchain</h3>
+      <p>Install Arduino IDE 2 or <code>arduino-cli</code>, the Espressif <b>esp32</b> core 3.3.x, and these libraries:</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Library</th><th>Tested</th></tr></thead>
+        <tbody>
+          <tr><td>NimBLE-Arduino</td><td>2.5.2</td></tr>
+          <tr><td>lvgl</td><td>9.2.2 and 9.6.0 (copy <code>lv_conf.h</code> next to the library: 512 KB pool in PSRAM, Montserrat 14/20/28)</td></tr>
+          <tr><td>GFX Library for Arduino</td><td>1.6.9</td></tr>
+          <tr><td>ESP32-audioI2S</td><td>3.4.7 and 4.0.1</td></tr>
+          <tr><td>TinyGPSPlus</td><td>1.0.3</td></tr>
+        </tbody>
+      </table></div>
+      <p>Board: <b>ESP32S3 Dev Module</b>, USB CDC On Boot <b>Enabled</b>, Flash 16 MB, PSRAM <b>OPI</b>, Partition Scheme <b>Custom</b> (the sketch's <code>partitions.csv</code>).</p>
+<pre><button class="copy" type="button">Copy</button><code>git clone https://github.com/ozdadirri/shimano-ebike-hack.git
+cd shimano-ebike-hack/firmware/ble_explorer
+arduino-cli compile --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PSRAM=opi .</code></pre>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p1a"><span>esp32 core and the five libraries installed</span></label></li>
+        <li><label><input type="checkbox" data-k="p1b"><span><b>Gate:</b> <code>ble_explorer</code> compiles</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div><div class="no">2</div><div class="gate">phone · 2 min</div></div>
+    <div>
+      <h3>Free the EN100</h3>
+      <p>While anything is connected to the EN100, it doesn't advertise at all. Force-quit <b>Shimano Ride</b> and <b>E-TUBE Project</b> (swipe them away in the app switcher), or turn Bluetooth off in <b>Settings</b>. Control Centre's toggle only disconnects accessories. Check for iPads, Macs and Garmins nearby that might connect too.</p>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p2a"><span><b>Gate:</b> nothing else is connected to the bike</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div><div class="no">3</div><div class="gate">bench · 10 min</div></div>
+    <div>
+      <h3>Find the EN100</h3>
+      <p>Upload <code>ble_explorer</code>, open the serial monitor at <b>115200</b>, <em>then</em> press RST. If you open the monitor after the scan, you miss it. Type <code>s</code> to scan again.</p>
+<pre><button class="copy" type="button">Copy</button><code>arduino-cli upload -p /dev/cu.usbmodem101 --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PSRAM=opi .
+arduino-cli monitor -p /dev/cu.usbmodem101 -c baudrate=115200</code></pre>
+      <p>Scan once with the bike <b>off</b> and once with it <b>on</b>. The device that only appears with the bike on is your EN100. It advertises under the bike's name (set in E-TUBE) with the Shimano service:</p>
+<pre><code>[13] c4:82:cf:xx:xx:xx  RSSI  -70  name='Borghini'   &lt;== Shimano?
+       svc 000018ff-5348-494d-414e-4f5f424c4500
+       svc 000018ef-5348-494d-414e-4f5f424c4500</code></pre>
+      <p class="muted">Every Shimano UUID ends in the ASCII bytes <code>SHIMANO_BLE</code>.</p>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p3a"><span>Scan output visible in the monitor</span></label></li>
+        <li><label><input type="checkbox" data-k="p3b"><span><b>Gate:</b> a device with service <code>000018ef-…</code> appears only with the bike on</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div><div class="no">4</div><div class="gate">bench · 5 min</div></div>
+    <div>
+      <h3>Connect and dump the GATT table</h3>
+      <p>Type the EN100's number and press Enter. Pairing is <b>Just Works</b>: no passkey and no Shimano login. The sketch lists every service, reads what it can and subscribes to everything. Within a second the ride data starts:</p>
+<pre><code>Security: encrypted=1 authenticated=0 bonded=1
+SERVICE 000018ef-5348-494d-414e-4f5f424c4500
+  CHAR 00002ac1-5348-494d-414e-4f5f424c4500 h=62 [N]
+--- Listening ---
+  60868 NTF h= 62 00002ac1-…  00 00 FF FF FF FF FF 80 80 80 80 80 80 FF FF FF FF
+  61117 NTF h= 62 00002ac1-…  02 00 00 00 00 00 00 00 00 00
+  61368 NTF h= 62 00002ac1-…  03 D9 00 00 00 64 4D 64 00 84 00 E1 00 45 00 61 00 8B 00</code></pre>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p4a"><span><b>Gate:</b> <code>NTF h=62</code> lines arrive about 4 times a second</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div><div class="no">5</div><div class="gate">bike on a stand · 15 min</div></div>
+    <div>
+      <h3>Check the fields on your bike</h3>
+      <p>Your bike or firmware may differ, so confirm the byte map before you trust it. <code>tools/en100_capture.py</code> resets the board, waits for the EN100, connects and logs everything. Start it, <em>then</em> switch the bike on:</p>
+<pre><button class="copy" type="button">Copy</button><code>pip3 install pyserial
+python3 tools/en100_capture.py 110 &gt; capture.txt</code></pre>
+      <ol>
+        <li>Wait 15 s without touching anything (baseline).</li>
+        <li>Press assist up one step every 5 s. Type <code>02</code> byte 1 should step 0 → 1 → 2 → 3.</li>
+        <li>Turn the light on, then off. Type <code>01</code> byte 6 should go 2, then 1.</li>
+        <li>Lift the rear wheel and turn the pedals, slow then faster. Type <code>02</code> bytes 2–3 (speed) and byte 5 (cadence) should rise.</li>
+        <li>Compare the range in type <code>03</code> with the display, or with Shimano Ride later.</li>
+      </ol>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p5a"><span>Assist byte follows the switch</span></label></li>
+        <li><label><input type="checkbox" data-k="p5b"><span>Light byte toggles</span></label></li>
+        <li><label><input type="checkbox" data-k="p5c"><span><b>Gate:</b> speed rises when the wheel spins</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div><div class="no">6</div><div class="gate">bench · 20 min</div></div>
+    <div>
+      <h3>Flash the dashboard</h3>
+      <p>Copy <code>secrets.example.h</code> to <code>secrets.h</code> (it's git-ignored). Fill in your Wi-Fi and, optionally, <code>BIKE_ADDR</code>, your EN100's address as the explorer printed it, so the dashboard ignores other riders' bikes.</p>
+<pre><button class="copy" type="button">Copy</button><code>cd firmware/etube_ui
+cp secrets.example.h secrets.h      # then edit it
+arduino-cli compile --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi .
+arduino-cli upload  --fqbn esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashSize=16M,PartitionScheme=custom,PSRAM=opi -p /dev/cu.usbmodem101 .</code></pre>
+      <p>Press RST, then switch the bike off and on. The serial log shows the link:</p>
+<pre><code>Bike: found 'Borghini' (c4:82:cf:xx:xx:xx) RSSI -66
+Bike: connecting...
+Bike: live data</code></pre>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p6a"><span>Status bar goes from <b>SIM DATA</b> to <b>BUS OK</b> within about 10 s</span></label></li>
+        <li><label><input type="checkbox" data-k="p6b"><span>The assist button follows the bike's switch; LIGHT ON/OFF follows the light</span></label></li>
+        <li><label><input type="checkbox" data-k="p6c"><span><b>Gate:</b> bike off → <b>NO BUS</b>; bike on → <b>BUS OK</b> again</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div><div class="no">7</div><div class="gate">phone · 5 min</div></div>
+    <div>
+      <h3>Pair the iPhone</h3>
+      <p>On the iPhone: <b>Settings → Bluetooth → E-TUBE Tap</b>, then accept the pairing. The MUSIC tab shows what's playing. For heart rate, run <b>HeartCast</b> on the iPhone with an Apple Watch, or wear any Bluetooth chest strap. The dashboard finds it by itself.</p>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p7a"><span>MUSIC tab shows the current track; play/skip work</span></label></li>
+        <li><label><input type="checkbox" data-k="p7b"><span><b>Gate:</b> with Shimano Ride force-quit, the bike still reconnects after an off/on</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div><div class="no">8</div><div class="gate">weekend</div></div>
+    <div>
+      <h3>Power, case and mount</h3>
+      <p><b>Battery:</b> look for a small 2-pin battery connector on the board. If there is one, a 1S LiPo charges through the board's USB-C. <strong>Check the plug polarity first.</strong> Cheap LiPo leads are often wired backwards. Without a connector, use a slim USB power bank. Screen, Bluetooth and Wi-Fi draw roughly 150–300 mA, so 2000 mAh lasts about 6–10 h.</p>
+      <p><b>Case:</b> start with a waterproof phone bag on the handlebar or top tube. The touchscreen works through the clear film. For the final build, adapt the parametric OpenSCAD case (<a href="https://github.com/ozdadirri/shimano-ebike-hack/blob/main/hardware/case/etube_case.scad"><code>etube_case.scad</code></a>, with a Garmin quarter-turn tab) to the ES3C28P's measurements, and print it in PETG or ASA. The <a href="tap.html#case">case chapter</a> has the details.</p>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p8a"><span>Runs from battery, mounted where you can read it</span></label></li>
+        <li><label><input type="checkbox" data-k="p8b"><span><b>Gate:</b> 30-minute ride, no reboot, BUS OK throughout</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div><div class="no">9</div><div class="gate">optional · 30 min</div></div>
+    <div>
+      <h3>Add GPS for a real map</h3>
+      <p>The map code reads standard NMEA at 9600 baud on <b>GPIO14</b> and switches from the simulated route to the real one as soon as data arrives. Wire module <b>TX → GPIO14</b>, RX → GPIO21 (optional), VCC → 3V3, GND → GND. Check that both pins are broken out on your board's headers. If not, change the two numbers in <code>gps_track.cpp</code>. Go outside: the first fix takes 30 s to a few minutes.</p>
+      <ul class="check">
+        <li><label><input type="checkbox" data-k="p9a"><span><b>Gate:</b> MAP shows satellites and your real track</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 CONTRACT ============ -->
+<section id="contract">
+  <h2><span class="ch">Chapter 06</span>The Shimano data</h2>
+  <p class="prose">Everything comes from one characteristic: <code>2ac1</code> in service <code>000018ef-5348-494d-414e-4f5f424c4500</code>. It sends a notification about every <b>250 ms</b>. <b>Byte 0 is the message type</b>, and the types take turns, so each one repeats about once a second. Numbers are little-endian, and byte positions count from 0. Battery comes from the standard Battery service.</p>
+
+  <h3>Type <code>02</code>: riding</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Byte</th><th>Field</th><th>Scale</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Assist mode</td><td>0 OFF · 1 ECO · 2 NORMAL · 3 HIGH</td><td><span class="pill yes">Confirmed</span></td></tr>
+      <tr><td>2–3</td><td>Speed</td><td>0.1 km/h</td><td><span class="pill yes">Confirmed</span></td></tr>
+      <tr><td>4</td><td>?</td><td>0–3 while pedalling</td><td><span class="pill no">Unknown</span></td></tr>
+      <tr><td>5</td><td>Cadence</td><td>rpm</td><td><span class="pill hard">Likely</span></td></tr>
+      <tr><td>6</td><td>? flag</td><td>went to 1 at ~26 km/h</td><td><span class="pill no">Unknown</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Type <code>03</code>: distance, speed, range</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Byte</th><th>Field</th><th>Scale</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>1–4</td><td>Trip distance</td><td>m</td><td><span class="pill hard">Likely</span></td></tr>
+      <tr><td>5–6</td><td>Second distance counter (<b>not</b> the odometer)</td><td>m</td><td><span class="pill no">Unknown</span></td></tr>
+      <tr><td>7</td><td>Battery</td><td>%</td><td><span class="pill hard">Likely</span></td></tr>
+      <tr><td>9–10</td><td>Average speed</td><td>0.1 km/h</td><td><span class="pill hard">Likely</span></td></tr>
+      <tr><td>11–12</td><td>Maximum speed</td><td>0.1 km/h</td><td><span class="pill hard">Likely</span></td></tr>
+      <tr><td>13–14 · 15–16 · 17–18</td><td>Range in HIGH · NORMAL · ECO</td><td>km</td><td><span class="pill yes">ECO confirmed</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Type <code>01</code>: status · Battery service</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Where</th><th>Field</th><th>Scale</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><code>01</code> byte 6</td><td>Light</td><td>2 on · 1 off</td><td><span class="pill yes">Confirmed</span></td></tr>
+      <tr><td><code>180f</code> / <code>2a19</code></td><td>Battery</td><td>%</td><td><span class="pill yes">Confirmed</span></td></tr>
+      <tr><td>types <code>00</code>, <code>04</code></td><td>Constant / rare; maybe Di2 gear fields this bike doesn't have</td><td></td><td><span class="pill no">Unknown</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The decoder</h3>
+  <p class="prose">This is the heart of <code>bike_ble.cpp</code>. It runs on every notification and fills the same <code>RideState</code> the screens already draw from.</p>
+<pre><button class="copy" type="button">Copy</button><code>static void onData(NimBLERemoteCharacteristic *, uint8_t *d, size_t n, bool) {
+  switch (d[0]) {
+    case 0x02:                                    // riding
+      ride.assist   = d[1] == 1 ? ASSIST_ECO : d[1] == 2 ? ASSIST_NORMAL
+                    : d[1] == 3 ? ASSIST_HIGH : ASSIST_OFF;
+      ride.speedKph = u16(d + 2) / 10.0f;
+      ride.cadenceRpm = d[5];
+      break;
+    case 0x03:                                    // distance, speed, range
+      ride.tripKm = u32(d + 1) / 1000.0f;
+      ride.maxKph = u16(d + 11) / 10.0f;
+      range[ASSIST_HIGH] = u16(d + 13);
+      range[ASSIST_NORMAL] = u16(d + 15);
+      range[ASSIST_ECO] = u16(d + 17);
+      break;
+    case 0x01:                                    // status
+      ride.lightOn = d[6] == 2;
+      break;
+  }
+  lastFrameMs = millis();                         // older than 3 s = NO BUS
+}</code></pre>
+  <div class="note"><span class="h">Check every guess</span><p>Our first guess at the odometer was type <code>03</code> bytes 5–8 read as one number: 6,573 km. The bike has done about 3,000 km. Byte 7 turned out to be battery %, and bytes 5–6 something else. A value that looks plausible isn't confirmed until it matches the bike.</p></div>
+  <p class="prose">The full GATT table (both Shimano services, all 20 characteristics), example frames and the open questions are in the <a href="https://github.com/ozdadirri/shimano-ebike-hack/blob/main/docs/en100-ble-protocol.md">protocol notes</a>. The raw captures are in <a href="https://github.com/ozdadirri/shimano-ebike-hack/tree/main/captures/en100"><code>captures/en100</code></a>.</p>
+</section>
+
+<!-- ============ 07 DASHBOARD ============ -->
+<section id="dashboard">
+  <h2><span class="ch">Chapter 07</span>The dashboard</h2>
+  <p class="prose">Five screens: change with the tab bar, or swipe. The status bar always says where the ride data comes from.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Status bar</th><th>Meaning</th><th>What the screen does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill yes">BUS OK</span></td><td>Frames from the EN100 in the last 3 s</td><td>Live values. The assist buttons follow the bike.</td></tr>
+      <tr><td><span class="pill no">NO BUS</span></td><td>The link dropped (bike off, out of range, phone took it)</td><td>Speed shows 0. It never falls back to fake values.</td></tr>
+      <tr><td><span class="pill hard">SIM DATA</span></td><td>No bike since power-on</td><td>Simulated values, for testing the screens on the bench.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Screen</th><th>Shows</th></tr></thead>
+    <tbody>
+      <tr><td><b>RIDE</b></td><td>Speed, assist mode, battery, range for the current mode (<code>-- km</code> with assist OFF), trip, LIGHT ON/OFF, heart rate, mini player</td></tr>
+      <tr><td><b>MAP</b></td><td>Breadcrumb track (up to 1,500 points, one every 5 m), scale bar, speed, heart rate, ride time</td></tr>
+      <tr><td><b>MUSIC</b></td><td>iPhone now-playing: title, artist, app, progress, play/skip/volume</td></tr>
+      <tr><td><b>RADIO</b></td><td>Nine stations; volume 0–21, then BOOST up to +12 dB</td></tr>
+      <tr><td><b>MP3</b></td><td>Library from microSD (up to 400 files, 3 folders deep), shuffle, repeat</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note tip"><span class="h">The assist buttons only follow the bike</span><p>The link is read-only, so tapping ECO / NORMAL / HIGH while live does nothing. Change mode with the bike's own switch. Pressing the switch electronically is a separate add-on idea: see <a href="tap.html#control">controlling assist and lights</a>.</p></div>
+  <p class="prose">Serial commands at 115200: <code>p</code> screenshot, <code>t120,248</code> fake tap, <code>r6</code> play station 6, <code>s</code> stop audio, <code>c</code> clock. <code>tools/screenshot.py</code> uses them to save PNGs straight from the frame buffer.</p>
+</section>
+
+<!-- ============ 08 PHONE ============ -->
+<section id="phone">
+  <h2><span class="ch">Chapter 08</span>Phone + dashboard</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Link</th><th>Who connects</th><th>Can run together?</th></tr></thead>
+    <tbody>
+      <tr><td>Dashboard ↔ EN100</td><td>Dashboard connects out</td><td rowspan="2"><span class="pill no">No</span> The EN100 takes one link. Whoever connects first wins.</td></tr>
+      <tr><td>Shimano Ride ↔ EN100</td><td>Phone connects out</td></tr>
+      <tr><td>iPhone ↔ dashboard (“E-TUBE Tap”)</td><td>Phone connects in</td><td><span class="pill yes">Yes</span> Music and bike data, alongside the EN100 link</td></tr>
+      <tr><td>Heart-rate sender ↔ dashboard</td><td>Dashboard connects out</td><td><span class="pill yes">Yes</span></td></tr>
+    </tbody>
+  </table></div>
+  <ol class="prose">
+    <li><b>Riding with the dashboard:</b> force-quit Shimano Ride, then switch the bike on. Keep Bluetooth on for music.</li>
+    <li><b>Need Ride</b> (odometer, settings, firmware)? Open it. The dashboard shows NO BUS while Ride holds the bike.</li>
+    <li><b>Back to the dashboard:</b> force-quit Ride, then switch the bike off and on.</li>
+  </ol>
+</section>
+
+<!-- ============ 09 TROUBLE ============ -->
+<section id="trouble">
+  <h2><span class="ch">Chapter 09</span>Troubleshooting</h2>
+  <p class="prose">Everything here happened during the first build session.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>EN100 missing from scans</td><td>Shimano Ride is connected (maybe in the background), or the bike is off</td><td>Force-quit Ride, switch the bike off and on. Diff a bike-off and a bike-on scan.</td></tr>
+      <tr><td>Connects once, never again</td><td>Connecting while a scan is running. NimBLE refuses</td><td>Stop the scan before <code>connect()</code>. Fixed in <code>bike_ble.cpp</code>.</td></tr>
+      <tr><td>Serial monitor blank after upload</td><td>The scan printed before the monitor opened</td><td>Open the monitor first, then press RST, or type <code>s</code>.</td></tr>
+      <tr><td>Upload: “No serial data received”, port still listed</td><td>The S3's native USB serial locked up after many fast resets</td><td>Unplug the board and plug it back in.</td></tr>
+      <tr><td>Can't open the port</td><td>Arduino IDE's Serial Monitor holds it</td><td>Close the monitor tab.</td></tr>
+      <tr><td><code>invalid conversion from 'int' to 'lv_part_t'</code></td><td>LVGL 9.6 is stricter than 9.2</td><td>Use <code>LV_PART_MAIN</code> instead of <code>0</code> (fixed in the repo).</td></tr>
+      <tr><td>MP3 tab: “no card”</td><td>Card not seated, or not FAT32/exFAT</td><td>Re-seat or reformat the card. Watch the serial log for <code>SD:</code> lines.</td></tr>
+      <tr><td>Disconnect reason 520</td><td>Supervision timeout: the bike was switched off</td><td>Normal. The dashboard rescans by itself.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ 10 ROADMAP ============ -->
+<section id="roadmap">
+  <h2><span class="ch">Chapter 10</span>What's next</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Item</th><th>Status</th><th>Plan</th></tr></thead>
+    <tbody>
+      <tr><td>Odometer</td><td><span class="pill no">Not found</span></td><td>Note the odometer in Shimano Ride, capture, and search every message for it. It may only be readable through Shimano's authenticated settings service, which we won't write to.</td></tr>
+      <tr><td>Walk mode, error codes</td><td><span class="pill no">Not found</span></td><td>Capture while holding walk assist. Note any code the bike shows. Never cause faults on purpose.</td></tr>
+      <tr><td>Cadence, max/avg speed on screen</td><td><span class="pill hard">Decoded</span></td><td>Already in <code>RideState</code>. Needs room on the Ride screen.</td></tr>
+      <tr><td>GPS map + GPX ride log on microSD</td><td><span class="pill hard">Code ready</span></td><td>Fit a GPS module (Phase 9), then write GPX files for Strava.</td></tr>
+      <tr><td>Battery + printed case for the ES3C28P</td><td><span class="pill hard">Planned</span></td><td>Measure the board, adapt <code>etube_case.scad</code>, add a battery bay.</td></tr>
+      <tr><td>Wired E-TUBE tap</td><td><span class="pill sig">Research</span></td><td>Listening on the bike's wire instead of Bluetooth. A full design, not built: <a href="tap.html">wired tap guide</a>.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ 11 SAFETY ============ -->
+<section id="safety">
+  <h2><span class="ch">Chapter 11</span>Safety</h2>
+  <ul class="prose">
+    <li><b>Read-only.</b> The firmware reads and subscribes. It never writes a characteristic value and never touches Shimano's settings service (<code>18ff</code>). Writing to unknown characteristics on a motor controller is a bad idea.</li>
+    <li><b>25 km/h.</b> Nothing here changes the assist limit. It's a legal limit for pedelecs in Australia and the EU.</li>
+    <li><b>Eyes on the road.</b> Glance at the screen; don't use it while riding in traffic. Mount it firmly, where it can't swing into the bars.</li>
+    <li><b>LiPo cells.</b> Check the polarity, don't crush or puncture them, and don't charge one that's swollen or hot.</li>
+    <li><b>Warranty.</b> Nothing plugs into the bike, but treat this as an extra display, not a replacement for the bike's own unit.</li>
+  </ul>
+</section>
+
+<!-- ============ 12 SOURCES ============ -->
+<section id="sources">
+  <h2><span class="ch">Chapter 12</span>Sources</h2>
+  <ol class="src">
+    <li><a href="https://github.com/ozdadirri/shimano-ebike-hack/blob/main/docs/en100-ble-protocol.md">EW-EN100 Bluetooth protocol notes</a> (this project): GATT table, message layouts, captures.</li>
+    <li><a href="https://bike.shimano.com/en-US/product/component/mtb-ebike-e8000/EW-EN100.html">Shimano: EW-EN100</a>. Supported motors E5000/E6100/E7000/E8000.</li>
+    <li><a href="https://github.com/h2zero/NimBLE-Arduino">NimBLE-Arduino</a>: the Bluetooth LE stack used for every link.</li>
+    <li><a href="https://lvgl.io/">LVGL</a>: the graphics library behind the screens.</li>
+    <li><a href="https://github.com/schreibfaul1/ESP32-audioI2S">ESP32-audioI2S</a>: internet radio and MP3 playback.</li>
+    <li><a href="https://github.com/mikalhart/TinyGPSPlus">TinyGPSPlus</a>: NMEA parsing for the map.</li>
+  </ol>
+</section>
+
+</main>
+</div>
+
+<script>
+(function () {
+  // Old links pointed at chapters of the wired-tap guide, which now lives at tap.html.
+  var OLD = ['limits', 'bus', 'system', 'circuit', 'wiring', 'decode', 'firmware', 'control', 'case', 'glossary', 'ble'];
+  var h = location.hash.slice(1);
+  if (OLD.indexOf(h) >= 0) { location.replace('tap.html#' + h); return; }
+
+  // Copy buttons
+  document.querySelectorAll('pre .copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var code = b.parentElement.querySelector('code').innerText;
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, function () {});
+    });
+  });
+
+  // Build checklist; progress stays in this browser only
+  var KEY = 'borghini-build-v1', state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+  var boxes = document.querySelectorAll('ul.check input[data-k]');
+  var txt = document.getElementById('prog-txt'), bar = document.getElementById('prog-bar');
+  function update() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    txt.textContent = n + ' of ' + boxes.length + ' checks done';
+    bar.style.width = (boxes.length ? 100 * n / boxes.length : 0) + '%';
+  }
+  boxes.forEach(function (b) {
+    b.checked = !!state[b.dataset.k];
+    b.addEventListener('change', function () {
+      state[b.dataset.k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+      update();
+    });
+  });
+  update();
+})();
+</script>

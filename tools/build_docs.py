@@ -3,14 +3,16 @@
 documents so they open directly in a browser and work on GitHub Pages.
 
 Run: python3 tools/build_docs.py
-  docs/etube-tap-guide.html  ->  docs/index.html
-  docs/media-guide.html      ->  docs/media.html
+  docs/dashboard-guide.html  ->  docs/index.html   (main page: Borghini's dashboard, Bluetooth route)
+  docs/etube-tap-guide.html  ->  docs/tap.html     (wired E-TUBE tap, research)
+  docs/media-guide.html      ->  docs/media.html   (Ride Audio add-on)
 """
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = [
-    ("etube-tap-guide.html", "index.html"),
+    ("dashboard-guide.html", "index.html"),
+    ("etube-tap-guide.html", "tap.html"),
     ("media-guide.html", "media.html"),
 ]
 
