@@ -39,18 +39,6 @@ Bluetooth LE: no wires, no tap. Tested on Borghini (EN100 firmware 4.6.0.0):
 
 ![Borghini, a blue Merida eSpresso 400 S EQ. The E-TUBE wire runs from the DU-E6100 motor past the 504 Wh battery in the down tube to the EW-EN100 wireless unit near the head tube, which sends Bluetooth LE to the ESP32-S3 display or an iPhone on the handlebar.](docs/img/bike-annotated_en100.png)
 
-<table>
-  <tr>
-    <td width="45%" align="center">
-      <img src="docs/img/dashboard.png" alt="Touchscreen dashboard concept: 23.4 km/h, NORMAL assist, 72 % battery, 48 km range" width="100%"><br>
-      <sub><b>Touchscreen dashboard</b> (layout concept, sample values)</sub>
-    </td>
-    <td width="55%" align="center">
-      <img src="hardware/drawings/circuit-3.svg" alt="60 × 40 mm two-layer PCB layout: power chain along the top, signal path bottom-left, XIAO ESP32-S3 bottom-right" width="100%"><br>
-      <sub><b>Tap board PCB</b>, 60 × 40 mm, 2 layers (to scale)</sub>
-    </td>
-  </tr>
-</table>
 
 ## Ride Audio add-on
 
@@ -112,9 +100,9 @@ GitHub Pages publishes `main` / `docs`. Edit the `*-guide.html` sources, run `py
 | `tools/etube_decode.py` | Turns the firmware's pulse widths into bits (BPSK and DBPSK views) and logs experiments |
 | `tools/test_decode.py` | Simulated frames with timing jitter to check the decoder |
 | `tools/build_docs.py` | Rebuilds `docs/index.html`, `docs/tap.html` and `docs/media.html` from their sources |
-| `tools/export_drawings.py` | Exports every drawing in the guide to `hardware/drawings/*.svg` |
+| `tools/export_drawings.py` | Exports every drawing in the wired-tap guide to `hardware/drawings/*.svg` |
 | `hardware/case/etube_case.scad` | Parametric OpenSCAD head-unit case: bezel, shell, handlebar mount, gasket |
-| `hardware/drawings/` | Schematics, PCB layout, wiring and case drawings as standalone SVG |
+| `hardware/drawings/` | Case drawings as standalone SVG (`tools/export_drawings.py` regenerates these and the wired-tap circuit, PCB and wiring drawings from the tap guide) |
 | `hardware/bom.csv` | Parts list with approximate AUD prices |
 
 ## Firmware
